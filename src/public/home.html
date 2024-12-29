@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPOS API Documentation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+  <header class="bg-white shadow-md">
+    <nav class="container mx-auto px-6 py-3">
+      <div class="flex items-center justify-between">
+        <div class="text-xl font-bold text-gray-800"><a href="/">IPOS API</a></div>
+        <div>
+          <a href="/" class="text-gray-600 hover:text-gray-800 px-3 py-2">Home</a>
+          <a href="/docs" class="text-gray-600 hover:text-gray-800 px-3 py-2">Documentation</a>
+          <a href="#" class="text-gray-600 hover:text-gray-800 px-3 py-2">Support</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container mx-auto px-6 py-8">
+    <section class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-gray-800 mb-4">Welcome to IPOS API Documentation</h1>
+      <p class="text-xl text-gray-600">Empowering your Point of Sale systems with robust and flexible API solutions</p>
+    </section>
+
+    <section class="grid md:grid-cols-2 gap-8 mb-12">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Key Features</h2>
+        <ul class="list-disc list-inside text-gray-600">
+          <li>Real-time transaction processing</li>
+          <li>Inventory management integration</li>
+          <li>Customer data synchronization</li>
+          <li>Multi-location support</li>
+          <li>Customizable reporting</li>
+        </ul>
+      </div>
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Getting Started</h2>
+        <p class="text-gray-600 mb-4">Follow these steps to integrate IPOS API into your system:</p>
+        <ol class="list-decimal list-inside text-gray-600">
+          <li>Sign up for an API key</li>
+          <li>Review our comprehensive documentation</li>
+          <li>Test the API in our sandbox environment</li>
+          <li>Implement the API in your application</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-lg shadow-md p-6 mb-12">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">API Endpoints</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead>
+            <tr class="bg-gray-200">
+              <th class="px-4 py-2 text-left text-gray-700">Endpoint</th>
+              <th class="px-4 py-2 text-left text-gray-700">Description</th>
+              <th class="px-4 py-2 text-left text-gray-700">Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="border px-4 py-2 text-gray-600">/api/v1/transactions</td>
+              <td class="border px-4 py-2 text-gray-600">Process a new transaction</td>
+              <td class="border px-4 py-2 text-gray-600">POST</td>
+            </tr>
+            <tr class="bg-gray-100">
+              <td class="border px-4 py-2 text-gray-600">/api/v1/inventory</td>
+              <td class="border px-4 py-2 text-gray-600">Get current inventory status</td>
+              <td class="border px-4 py-2 text-gray-600">GET</td>
+            </tr>
+            <tr>
+              <td class="border px-4 py-2 text-gray-600">/api/v1/customers</td>
+              <td class="border px-4 py-2 text-gray-600">Manage customer information</td>
+              <td class="border px-4 py-2 text-gray-600">GET/POST</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="text-center">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Ready to get started?</h2>
+      <a href="/docs"
+        class="inline-block bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300">Explore
+        API Documentation</a>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white mt-12">
+    <div class="container mx-auto px-6 py-4">
+      <p class="text-center">&copy; 2024 IPOS API. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+
+</html>

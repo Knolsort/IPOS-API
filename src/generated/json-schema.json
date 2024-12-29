@@ -1,0 +1,824 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "Customer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "maxCreditLimit": {
+          "type": "number"
+        },
+        "maxCreditDays": {
+          "type": "integer"
+        },
+        "unpaidCreditAmount": {
+          "type": "integer",
+          "default": 0
+        },
+        "sales": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Sale"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "shops": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Shop"
+          }
+        }
+      }
+    },
+    "Shop": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string",
+          "default": "https://cdn-icons-png.flaticon.com/128/10446/10446694.png"
+        },
+        "location": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Product"
+          }
+        },
+        "sales": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Sale"
+          }
+        },
+        "admin": {
+          "$ref": "#/definitions/User"
+        },
+        "expenses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Expense"
+          }
+        },
+        "attendantPhone": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Supplier": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "contactPerson": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "product": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Product"
+          }
+        },
+        "purchaseOrders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PurchaseOrder"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Unit": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "abbreviation": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Product"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Brand": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Product"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Product"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Product": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "batchNumber": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "barcode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "image": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": "https://cdn-icons-png.flaticon.com/128/10446/10446694.png"
+        },
+        "gst": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "alertQty": {
+          "type": "integer"
+        },
+        "stockQty": {
+          "type": "integer"
+        },
+        "price": {
+          "type": "integer"
+        },
+        "sku": {
+          "type": "string"
+        },
+        "productCode": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "expiryDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "shop": {
+          "$ref": "#/definitions/Shop"
+        },
+        "unit": {
+          "$ref": "#/definitions/Unit"
+        },
+        "brand": {
+          "$ref": "#/definitions/Brand"
+        },
+        "category": {
+          "$ref": "#/definitions/Category"
+        },
+        "supplier": {
+          "$ref": "#/definitions/Supplier"
+        },
+        "saleItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SaleItem"
+          }
+        },
+        "adjustmentItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AdjustmentItem"
+          }
+        },
+        "purchaseOrderItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PurchaseOrderItem"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Sale": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "saleNumber": {
+          "type": "string"
+        },
+        "saleAmount": {
+          "type": "integer"
+        },
+        "balanceAmount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": 0
+        },
+        "paidAmount": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "saleType": {
+          "type": "string",
+          "default": "PAID",
+          "enum": [
+            "PAID",
+            "CREDIT"
+          ]
+        },
+        "paymentMethod": {
+          "type": "string",
+          "default": "CASH",
+          "enum": [
+            "CASH",
+            "UPI",
+            "AI"
+          ]
+        },
+        "transactionCode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "shop": {
+          "$ref": "#/definitions/Shop"
+        },
+        "saleItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SaleItem"
+          }
+        },
+        "customer": {
+          "$ref": "#/definitions/Customer"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "SaleItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "qty": {
+          "type": "integer"
+        },
+        "productPrice": {
+          "type": "number"
+        },
+        "productName": {
+          "type": "string"
+        },
+        "productImage": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "product": {
+          "$ref": "#/definitions/Product"
+        },
+        "sale": {
+          "$ref": "#/definitions/Sale"
+        }
+      }
+    },
+    "Payee": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "expenses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Expense"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ExpenseCategory": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "expenses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Expense"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Expense": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "integer"
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "payee": {
+          "$ref": "#/definitions/Payee"
+        },
+        "category": {
+          "$ref": "#/definitions/ExpenseCategory"
+        },
+        "shop": {
+          "$ref": "#/definitions/Shop"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Notification": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "default": "WARNING",
+          "enum": [
+            "WARNING",
+            "DANGER",
+            "INFO"
+          ]
+        },
+        "statusText": {
+          "type": "string"
+        },
+        "read": {
+          "type": "boolean",
+          "default": false
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Adjustment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "refNo": {
+          "type": "string",
+          "default": "AAAAB"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AdjustmentItem"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "AdjustmentItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "adjustment": {
+          "$ref": "#/definitions/Adjustment"
+        },
+        "product": {
+          "$ref": "#/definitions/Product"
+        },
+        "quantity": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string"
+        },
+        "currentStock": {
+          "type": "integer"
+        },
+        "productName": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "PurchaseOrder": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "supplier": {
+          "$ref": "#/definitions/Supplier"
+        },
+        "status": {
+          "type": "string",
+          "default": "PAID",
+          "enum": [
+            "PAID",
+            "PARTIAL",
+            "UNPAID"
+          ]
+        },
+        "discount": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tax": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "refNo": {
+          "type": "string"
+        },
+        "totalAmount": {
+          "type": "integer"
+        },
+        "balanceAmount": {
+          "type": "integer"
+        },
+        "shippingCost": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PurchaseOrderItem"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "PurchaseOrderItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "purchaseOrder": {
+          "$ref": "#/definitions/PurchaseOrder"
+        },
+        "product": {
+          "$ref": "#/definitions/Product"
+        },
+        "quantity": {
+          "type": "integer"
+        },
+        "productName": {
+          "type": "string"
+        },
+        "unitCost": {
+          "type": "integer"
+        },
+        "subTotal": {
+          "type": "integer"
+        },
+        "currentStock": {
+          "type": "integer"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "customer": {
+      "$ref": "#/definitions/Customer"
+    },
+    "user": {
+      "$ref": "#/definitions/User"
+    },
+    "shop": {
+      "$ref": "#/definitions/Shop"
+    },
+    "supplier": {
+      "$ref": "#/definitions/Supplier"
+    },
+    "unit": {
+      "$ref": "#/definitions/Unit"
+    },
+    "brand": {
+      "$ref": "#/definitions/Brand"
+    },
+    "category": {
+      "$ref": "#/definitions/Category"
+    },
+    "product": {
+      "$ref": "#/definitions/Product"
+    },
+    "sale": {
+      "$ref": "#/definitions/Sale"
+    },
+    "saleItem": {
+      "$ref": "#/definitions/SaleItem"
+    },
+    "payee": {
+      "$ref": "#/definitions/Payee"
+    },
+    "expenseCategory": {
+      "$ref": "#/definitions/ExpenseCategory"
+    },
+    "expense": {
+      "$ref": "#/definitions/Expense"
+    },
+    "notification": {
+      "$ref": "#/definitions/Notification"
+    },
+    "adjustment": {
+      "$ref": "#/definitions/Adjustment"
+    },
+    "adjustmentItem": {
+      "$ref": "#/definitions/AdjustmentItem"
+    },
+    "purchaseOrder": {
+      "$ref": "#/definitions/PurchaseOrder"
+    },
+    "purchaseOrderItem": {
+      "$ref": "#/definitions/PurchaseOrderItem"
+    }
+  }
+}
