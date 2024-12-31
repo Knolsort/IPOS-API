@@ -32,9 +32,10 @@ model Customer {
 
 model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  username  String   @unique
-  name      String
-  phone     String   @unique
+  firstName String
+  lastName  String
+  email     String   @unique
+  userId   String @unique @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   shops     Shop[]
@@ -57,16 +58,15 @@ model Shop {
 }
 
 model Supplier {
-  id                 String          @id @default(auto()) @map("_id") @db.ObjectId
-  name               String
-  phone              String          @unique
-  contactPerson      String?
-  product            Product[]
-  purchaseOrders     PurchaseOrder[]
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  phone          String          @unique
+  contactPerson  String?
+  product        Product[]
+  purchaseOrders PurchaseOrder[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
-
 
 model Unit {
   id           String    @id @default(auto()) @map("_id") @db.ObjectId
@@ -103,7 +103,7 @@ model Product {
   batchNumber        String?
   barcode            String?             @unique
   image              String?             @default("https://cdn-icons-png.flaticon.com/128/10446/10446694.png")
-  gst            Int?
+  gst                Int?
   alertQty           Int
   stockQty           Int
   price              Int

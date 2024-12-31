@@ -1,11 +1,11 @@
 import {
   createUser,
   deleteUserById,
-  getUser,
+  getUsers,
   getUserById,
   updateUserById,
 } from "../controllers/user";
-import express from "express";
+import express, { RequestHandler } from "express";
 
 const userRouter = express.Router();
 
@@ -31,7 +31,7 @@ const userRouter = express.Router();
  *               $ref: '#/components/schemas/User'
  */
 
-userRouter.post("/users", createUser);
+userRouter.post("/users", createUser);;
 
 /**
  * @swagger
@@ -50,7 +50,7 @@ userRouter.post("/users", createUser);
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-userRouter.get("/users", getUser);
+userRouter.get("/users", getUsers);
 
 /**
  * @swagger

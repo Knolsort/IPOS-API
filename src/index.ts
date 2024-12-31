@@ -21,12 +21,16 @@ import notificationRouter from "./routes/notification";
 import adjustmentRouter from "./routes/adjustment";
 import purchaseRouter from "./routes/purchase";
 import path from "path";
+import { clerkMiddleware } from '@clerk/express'
 
 dotenv.config();
 
 const app = express();
 
 // Middleware
+
+// Clerk auth 
+app.use(clerkMiddleware())
 
 // Swagger UI
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));

@@ -45,13 +45,16 @@
         "id": {
           "type": "string"
         },
-        "username": {
+        "firstName": {
           "type": "string"
         },
-        "name": {
+        "lastName": {
           "type": "string"
         },
-        "phone": {
+        "email": {
+          "type": "string"
+        },
+        "userId": {
           "type": "string"
         },
         "createdAt": {

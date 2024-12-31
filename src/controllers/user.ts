@@ -1,39 +1,60 @@
 import { RequestHandler } from "express";
 import { db } from "../db/db";
-import bcrypt from "bcrypt";
+import { clerkClient } from "@clerk/express";
 
 export const createUser: RequestHandler = async (req, res) => {
-  const { username, name, phone } = req.body;
-
   try {
-    // Check if user already exists phone
-    const existingUserByPhone = await db.user.findUnique({
-      where: {
-        phone,
-      },
-    });
-    if (existingUserByPhone) {
+    const { userId } = req.body;
+    if (!userId) {
       res.status(401).json({
-        error: `Phone Number (${phone}) is already taken`,
+        error: "Unauthorized",
         data: null,
       });
-      return;
     }
 
-    //Crete user
-    const newUser = await db.user.create({
-      data: {
-        username,
-        name,
-        phone,
+    // Get user data from Clerk
+    const clerkUser = await clerkClient.users.getUser(userId);
+    const email = clerkUser.emailAddresses[0]?.emailAddress;
+    const firstName = clerkUser.firstName || "";
+    const lastName = clerkUser.lastName || "";
+
+    if (!email) {
+      res.status(400).json({
+        error: "Email is required",
+        data: null,
+      });
+    }
+
+    // Check if user already exists by email
+    const existingUser = await db.user.findUnique({
+      where: {
+        email,
       },
     });
+
+    if (existingUser) {
+      res.status(400).json({
+        error: `Email (${email}) is already taken`,
+        data: null,
+      });
+    }
+
+    // Create user in database
+    const newUser = await db.user.create({
+      data: {
+        firstName,
+        lastName,
+        email,
+        userId,
+      },
+    });
+
     res.status(201).json({
       data: newUser,
       error: null,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Create user error:", error);
     res.status(500).json({
       error: "Something went wrong",
       data: null,
@@ -41,20 +62,21 @@ export const createUser: RequestHandler = async (req, res) => {
   }
 };
 
-export const getUser: RequestHandler = async (req, res) => {
+export const getUsers: RequestHandler = async (req, res) => {
   try {
     const users = await db.user.findMany({
       orderBy: {
         createdAt: "desc",
       },
     });
-    res.status(200).json({
+
+     res.status(200).json({
       data: users,
       error: null,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
+    console.error("Get users error:", error);
+     res.status(500).json({
       error: "Something went wrong",
       data: null,
     });
@@ -62,39 +84,44 @@ export const getUser: RequestHandler = async (req, res) => {
 };
 
 export const getUserById: RequestHandler = async (req, res) => {
-  const { id } = req.params;
   try {
+    const { id } = req.params;
+
     const user = await db.user.findUnique({
       where: {
         id,
       },
     });
+
     if (!user) {
-      res.status(404).json({
-        data: null,
+       res.status(404).json({
         error: "User not found",
-      });
-    } else {
-      res.status(200).json({
-        data: user,
-        error: null,
+        data: null,
       });
     }
+
+     res.status(200).json({
+      data: user,
+      error: null,
+    });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
+    console.error("Get user error:", error);
+     res.status(500).json({
       error: "Something went wrong",
       data: null,
     });
   }
 };
 
-export const updateUserById: RequestHandler = async (req, res) => {
+export const updateUserById: RequestHandler = async (
+  req,
+  res
+) => {
   try {
     const { id } = req.params;
-    const { username, name, phone } = req.body;
+    const { firstName, lastName,userId } = req.body;
 
-    // Existing user
+    // Check if user exists
     const existingUser = await db.user.findUnique({
       where: {
         id,
@@ -102,97 +129,84 @@ export const updateUserById: RequestHandler = async (req, res) => {
     });
 
     if (!existingUser) {
-      res.status(404).json({
-        data: null,
+       res.status(404).json({
         error: "User not found",
+        data: null,
       });
-      return;
     }
 
-    if (phone && phone !== existingUser.phone) {
-      const existingUserByPhone = await db.user.findUnique({
-        where: {
-          phone,
-        },
+    // Verify user is updating their own profile
+    if (existingUser?.userId !== userId) {
+       res.status(403).json({
+        error: "Not authorized to update this user",
+        data: null,
       });
-      if (existingUserByPhone) {
-        res.status(401).json({
-          error: `Phone Number (${phone}) is already taken`,
-          data: null,
-        });
-        return;
-      }
     }
 
-    if (username && username !== existingUser.username) {
-      const existingUserByUsername = await db.user.findUnique({
-        where: {
-          username,
-        },
-      });
-      if (existingUserByUsername) {
-        res.status(401).json({
-          error: `Username (${username}) is already taken`,
-          data: null,
-        });
-        return;
-      }
-    }
-
-    //Update user
-    const updateUser = await db.user.update({
+    const updatedUser = await db.user.update({
       where: {
         id,
       },
       data: {
-        username,
-        name,
-
-        phone,
+        firstName,
+        lastName,
       },
     });
 
-    //return update user without password
-    res.status(200).json({
-      data: updateUser,
+     res.status(200).json({
+      data: updatedUser,
       error: null,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
+    console.error("Update user error:", error);
+     res.status(500).json({
       error: "Something went wrong",
       data: null,
     });
   }
 };
 
-export const deleteUserById: RequestHandler = async (req, res) => {
-  const { id } = req.params;
+export const deleteUserById: RequestHandler = async (
+req,res
+) => {
   try {
+    const { id } = req.params;
+    const { userId } = req.body;
+
     const user = await db.user.findUnique({
       where: {
         id,
       },
     });
+
     if (!user) {
-      res.status(404).json({
-        data: null,
+       res.status(404).json({
         error: "User not found",
-      });
-    } else {
-      await db.user.delete({
-        where: {
-          id,
-        },
-      });
-      res.status(200).json({
-        success: true,
-        error: null,
+        data: null,
       });
     }
+
+    // Verify user is deleting their own profile
+    if (user?.userId !== userId) {
+       res.status(403).json({
+        error: "Not authorized to delete this user",
+        data: null,
+      });
+    }
+
+    await db.user.delete({
+      where: {
+        id,
+      },
+    });
+
+     res.status(200).json({
+      data: "User deleted successfully",
+      error: null,
+    });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
+    console.error("Delete user error:", error);
+     res.status(500).json({
       error: "Something went wrong",
       data: null,
     });
