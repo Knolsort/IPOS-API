@@ -12,6 +12,21 @@ export const createUser: RequestHandler = async (req, res) => {
       });
     }
 
+    // Check if user already exists by email
+    const existingUser = await db.user.findUnique({
+      where: {
+        userId,
+      },
+    });
+
+    if (existingUser) {
+      res.status(200).json({
+        data: existingUser,
+        error: null,
+      });
+      return;
+    }
+
     // Get user data from Clerk
     const clerkUser = await clerkClient.users.getUser(userId);
     const email = clerkUser.emailAddresses[0]?.emailAddress;
@@ -21,20 +36,6 @@ export const createUser: RequestHandler = async (req, res) => {
     if (!email) {
       res.status(400).json({
         error: "Email is required",
-        data: null,
-      });
-    }
-
-    // Check if user already exists by email
-    const existingUser = await db.user.findUnique({
-      where: {
-        email,
-      },
-    });
-
-    if (existingUser) {
-      res.status(400).json({
-        error: `Email (${email}) is already taken`,
         data: null,
       });
     }
@@ -70,13 +71,13 @@ export const getUsers: RequestHandler = async (req, res) => {
       },
     });
 
-     res.status(200).json({
+    res.status(200).json({
       data: users,
       error: null,
     });
   } catch (error) {
     console.error("Get users error:", error);
-     res.status(500).json({
+    res.status(500).json({
       error: "Something went wrong",
       data: null,
     });
@@ -94,32 +95,29 @@ export const getUserById: RequestHandler = async (req, res) => {
     });
 
     if (!user) {
-       res.status(404).json({
+      res.status(404).json({
         error: "User not found",
         data: null,
       });
     }
 
-     res.status(200).json({
+    res.status(200).json({
       data: user,
       error: null,
     });
   } catch (error) {
     console.error("Get user error:", error);
-     res.status(500).json({
+    res.status(500).json({
       error: "Something went wrong",
       data: null,
     });
   }
 };
 
-export const updateUserById: RequestHandler = async (
-  req,
-  res
-) => {
+export const updateUserById: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName,userId } = req.body;
+    const { firstName, lastName, userId } = req.body;
 
     // Check if user exists
     const existingUser = await db.user.findUnique({
@@ -129,7 +127,7 @@ export const updateUserById: RequestHandler = async (
     });
 
     if (!existingUser) {
-       res.status(404).json({
+      res.status(404).json({
         error: "User not found",
         data: null,
       });
@@ -137,7 +135,7 @@ export const updateUserById: RequestHandler = async (
 
     // Verify user is updating their own profile
     if (existingUser?.userId !== userId) {
-       res.status(403).json({
+      res.status(403).json({
         error: "Not authorized to update this user",
         data: null,
       });
@@ -153,22 +151,20 @@ export const updateUserById: RequestHandler = async (
       },
     });
 
-     res.status(200).json({
+    res.status(200).json({
       data: updatedUser,
       error: null,
     });
   } catch (error) {
     console.error("Update user error:", error);
-     res.status(500).json({
+    res.status(500).json({
       error: "Something went wrong",
       data: null,
     });
   }
 };
 
-export const deleteUserById: RequestHandler = async (
-req,res
-) => {
+export const deleteUserById: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
     const { userId } = req.body;
@@ -180,7 +176,7 @@ req,res
     });
 
     if (!user) {
-       res.status(404).json({
+      res.status(404).json({
         error: "User not found",
         data: null,
       });
@@ -188,7 +184,7 @@ req,res
 
     // Verify user is deleting their own profile
     if (user?.userId !== userId) {
-       res.status(403).json({
+      res.status(403).json({
         error: "Not authorized to delete this user",
         data: null,
       });
@@ -200,13 +196,13 @@ req,res
       },
     });
 
-     res.status(200).json({
+    res.status(200).json({
       data: "User deleted successfully",
       error: null,
     });
   } catch (error) {
     console.error("Delete user error:", error);
-     res.status(500).json({
+    res.status(500).json({
       error: "Something went wrong",
       data: null,
     });
