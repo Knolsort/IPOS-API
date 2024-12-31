@@ -68,14 +68,14 @@ export const getShopAttendants: RequestHandler = async (req, res) => {
       return;
     }
 
-    const attendants = await db.user.findMany({
+    const attendants = await db.shop.findMany({
       where: {
         id: {
           in: existingShop.attendantPhone,
         },
       },
-      select: {
-       phone: true,    
+      orderBy: {
+        createdAt: "desc",
       },
     });
 
