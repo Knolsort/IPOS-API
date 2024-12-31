@@ -5,6 +5,7 @@ import { clerkClient } from "@clerk/express";
 export const createUser: RequestHandler = async (req, res) => {
   try {
     const { userId } = req.body;
+    console.log("userId", userId);
     if (!userId) {
       res.status(401).json({
         error: "Unauthorized",
@@ -12,48 +13,41 @@ export const createUser: RequestHandler = async (req, res) => {
       });
     }
 
-    // Check if user already exists by email
+    // Check if user already exist
     const existingUser = await db.user.findUnique({
       where: {
         userId,
       },
     });
-
-    if (existingUser) {
-      res.status(200).json({
-        data: existingUser,
-        error: null,
-      });
-      return;
-    }
-
     // Get user data from Clerk
     const clerkUser = await clerkClient.users.getUser(userId);
     const email = clerkUser.emailAddresses[0]?.emailAddress;
     const firstName = clerkUser.firstName || "";
     const lastName = clerkUser.lastName || "";
 
-    if (!email) {
-      res.status(400).json({
-        error: "Email is required",
-        data: null,
+    console.log("firstName", firstName);
+
+    if (!existingUser) {
+      const newUser = await db.user.create({
+        data: {
+          firstName,
+          lastName,
+          email,
+          userId,
+        },
+      });
+    
+      res.status(201).json({
+        data: newUser,
+        error: null,
+      });
+    } else {
+      res.status(200).json({
+        data: existingUser,
+        error: null,
       });
     }
-
-    // Create user in database
-    const newUser = await db.user.create({
-      data: {
-        firstName,
-        lastName,
-        email,
-        userId,
-      },
-    });
-
-    res.status(201).json({
-      data: newUser,
-      error: null,
-    });
+      
   } catch (error) {
     console.error("Create user error:", error);
     res.status(500).json({

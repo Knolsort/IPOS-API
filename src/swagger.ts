@@ -42,10 +42,6 @@ const options = {
         description: "APIs related to sales in the system",
       },
       {
-        name: "Auth",
-        description: "APIs related to auth in the system",
-      },
-      {
         name: "Adjustments",
         description: "APIs related to Adjustments in the system",
       },
