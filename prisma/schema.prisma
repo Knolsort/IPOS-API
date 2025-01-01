@@ -44,9 +44,13 @@ model User {
 model Shop {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
   name           String
+  phone          String    @unique
   slug           String    @unique
   logo           String    @default("https://cdn-icons-png.flaticon.com/128/10446/10446694.png")
   location       String
+  latitude       Float?
+  longitude      Float?
+  gst            Boolean?   @default(false)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   adminId        String    @db.ObjectId

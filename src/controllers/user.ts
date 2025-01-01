@@ -5,7 +5,6 @@ import { clerkClient } from "@clerk/express";
 export const createUser: RequestHandler = async (req, res) => {
   try {
     const { userId } = req.body;
-    console.log("userId", userId);
     if (!userId) {
       res.status(401).json({
         error: "Unauthorized",
@@ -25,8 +24,6 @@ export const createUser: RequestHandler = async (req, res) => {
     const firstName = clerkUser.firstName || "";
     const lastName = clerkUser.lastName || "";
 
-    console.log("firstName", firstName);
-
     if (!existingUser) {
       const newUser = await db.user.create({
         data: {
@@ -36,7 +33,7 @@ export const createUser: RequestHandler = async (req, res) => {
           userId,
         },
       });
-    
+
       res.status(201).json({
         data: newUser,
         error: null,
@@ -47,7 +44,6 @@ export const createUser: RequestHandler = async (req, res) => {
         error: null,
       });
     }
-      
   } catch (error) {
     console.error("Create user error:", error);
     res.status(500).json({

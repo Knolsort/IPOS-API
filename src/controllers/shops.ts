@@ -3,12 +3,23 @@ import { db } from "../db/db";
 
 export const createShop: RequestHandler = async (req, res) => {
   try {
-    const { name, slug, location,logo, adminId, attendantPhone } = req.body;
-    
+    const {
+      name,
+      slug,
+      phone,
+      location,
+      latitude,
+      longitude,
+      gst,
+      logo,
+      adminId,
+      attendantPhone,
+    } = req.body;
+
     const existingShop = await db.shop.findUnique({
       where: { slug },
     });
-    
+
     if (existingShop) {
       res.status(409).json({
         error: `Shop ${name} already existing`,
@@ -18,7 +29,18 @@ export const createShop: RequestHandler = async (req, res) => {
     }
 
     const newShop = await db.shop.create({
-      data: {  name, slug, location,logo, adminId, attendantPhone },
+      data: {
+        name,
+        slug,
+        phone,
+        location,
+        latitude,
+        longitude,
+        gst,
+        logo,
+        adminId,
+        attendantPhone,
+      },
     });
 
     res.status(201).json({
@@ -39,7 +61,7 @@ export const getShops: RequestHandler = async (req, res) => {
     const shops = await db.shop.findMany({
       orderBy: { createdAt: "desc" },
     });
-    
+
     res.status(200).json({
       data: shops,
       error: null,
@@ -59,7 +81,7 @@ export const getShopAttendants: RequestHandler = async (req, res) => {
     const existingShop = await db.shop.findUnique({
       where: { id },
     });
-    
+
     if (!existingShop) {
       res.status(404).json({
         data: null,
@@ -98,7 +120,7 @@ export const getSingleShop: RequestHandler = async (req, res) => {
     const existingShop = await db.shop.findUnique({
       where: { id },
     });
-    
+
     if (!existingShop) {
       res.status(404).json({
         data: null,
