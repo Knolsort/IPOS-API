@@ -42,7 +42,7 @@ productRouter.post("/products", createProduct);
 
 /**
  * @swagger
- * /products:
+ *  /api/v1/products:
  *   get:
  *     summary: Get all products
  *     tags: [Products]
@@ -60,7 +60,7 @@ productRouter.get("/products", getProducts);
 
 /**
  * @swagger
- * /products/{id}:
+ *  /api/v1/products/:{id}:
  *   get:
  *     summary: Get a single product by ID
  *     tags: [Products]
@@ -85,7 +85,7 @@ productRouter.get("/products/:id", getSingleProduct);
 
 /**
  * @swagger
- * /products/{id}:
+ *  /api/v1/products/:{id}:
  *   put:
  *     summary: Update a product by ID
  *     tags: [Products]
@@ -116,7 +116,7 @@ productRouter.put("/products/:id", updateProductById);
 
 /**
  * @swagger
- * /products/{id}:
+ *  /api/v1/products/:{id}:
  *   delete:
  *     summary: Delete a product by ID
  *     tags: [Products]
