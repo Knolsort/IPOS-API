@@ -44,21 +44,21 @@ model User {
 model Shop {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
   name           String
-  phone          String    @unique
+  phone          String?    @unique
   slug           String    @unique
   logo           String    @default("https://cdn-icons-png.flaticon.com/128/10446/10446694.png")
   location       String
   latitude       Float?
   longitude      Float?
   gst            Boolean?   @default(false)
+  attendantPhone String[]
+  adminId        String    @db.ObjectId
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-  adminId        String    @db.ObjectId
   products       Product[]
   sales          Sale[]
   admin          User      @relation(fields: [adminId], references: [id])
   expenses       Expense[]
-  attendantPhone String[]
 }
 
 model Supplier {
