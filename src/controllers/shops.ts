@@ -13,7 +13,7 @@ export const createShop: RequestHandler = async (req, res) => {
       gst,
       logo,
       adminId,
-      attendantPhone,
+      attendantEmail,
     } = req.body;
 
     const existingShop = await db.shop.findUnique({
@@ -39,7 +39,7 @@ export const createShop: RequestHandler = async (req, res) => {
         gst,
         logo,
         adminId,
-        attendantPhone,
+        attendantEmail,
       },
     });
 
@@ -93,7 +93,7 @@ export const getShopAttendants: RequestHandler = async (req, res) => {
     const attendants = await db.shop.findMany({
       where: {
         id: {
-          in: existingShop.attendantPhone,
+          in: existingShop.attendantEmail,
         },
       },
       orderBy: {

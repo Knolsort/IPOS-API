@@ -117,7 +117,7 @@
           ],
           "default": false
         },
-        "attendantPhone": {
+        "attendantEmail": {
           "type": "array",
           "items": {
             "type": "string"
