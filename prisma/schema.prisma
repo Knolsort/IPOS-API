@@ -51,7 +51,7 @@ model Shop {
   latitude       Float?
   longitude      Float?
   gst            Boolean?   @default(false)
-  attendantPhone String[]
+  attendantEmail String[]
   adminId        String    @db.ObjectId
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt

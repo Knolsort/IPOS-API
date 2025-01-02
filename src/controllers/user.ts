@@ -17,6 +17,9 @@ export const createUser: RequestHandler = async (req, res) => {
       where: {
         userId,
       },
+      include: {
+        shops: true,
+      }
     });
     // Get user data from Clerk
     const clerkUser = await clerkClient.users.getUser(userId);
@@ -82,6 +85,10 @@ export const getUserById: RequestHandler = async (req, res) => {
       where: {
         id,
       },
+      include: {
+        shops: true,
+      },
+      
     });
 
     if (!user) {
