@@ -66,8 +66,8 @@ export const createAdjustment: RequestHandler = async (req, res) => {
           //Create notification if stock is low
           const message =
             updatedProduct.stockQty === 0
-              ? `The stock of ${updatedProduct.name} is out of stock. Curent stock is ${updatedProduct.stockQty}`
-              : `The stock of ${updatedProduct.name} is low. Curent stock is ${updatedProduct.stockQty}`;
+              ? `The stock of ${updatedProduct.sku} is out of stock. Curent stock is ${updatedProduct.stockQty}`
+              : `The stock of ${updatedProduct.sku} is low. Curent stock is ${updatedProduct.stockQty}`;
           const statusText =
             updatedProduct.stockQty === 0 ? "Out of Stock" : "Low Stock";
           const status: NotificationStatus =
