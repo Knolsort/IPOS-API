@@ -22,6 +22,7 @@ import adjustmentRouter from "./routes/adjustment";
 import purchaseRouter from "./routes/purchase";
 import path from "path";
 import { clerkMiddleware } from '@clerk/express'
+import gProductRouter from "./routes/gproduct";
 
 dotenv.config();
 
@@ -84,6 +85,7 @@ app.use("/api/v1", supplierRouter);
 app.use("/api/v1", unitRouter);
 app.use("/api/v1", brandRouter);
 app.use("/api/v1", categoryRouter);
+app.use("/api/v1", gProductRouter);
 app.use("/api/v1", productRouter);
 app.use("/api/v1", saleRouter);
 app.use("/api/v1", payeeRouter);

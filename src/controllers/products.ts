@@ -1,42 +1,42 @@
 import { RequestHandler } from "express";
 import { db } from "../db/db";
-import { basename } from "path";
 
 export const createProduct: RequestHandler = async (req, res) => {
   try {
     const {
-      name,
-      description,
+      gproductId,
       batchNumber,
       barcode,
-      image,
-      gst,
       alertQty,
       stockQty,
       price,
       sku,
-      productCode,
-      slug,
       supplierId,
       unitId,
-      brandId,
-      categoryId,
-      expiryDate,
       shopId,
+      expiryDate,
     } = req.body;
 
-    //Check if product already exists
-    const existingProductBySlug = await db.product.findUnique({
-      where: { slug },
-    });
-
-    if (existingProductBySlug) {
-      res.status(409).json({
-        error: `Product ${name} already exists`,
+    // Validate required fields
+    if (!gproductId || !shopId) {
+      res.status(400).json({
+        error: "gproductId and shopId are required",
         data: null,
       });
-      return;
     }
+
+    //Check if product already exists
+    const existingProductByGproductId = await db.product.findFirst({
+      where: { shopId, gproductId, },
+    });
+
+    if (existingProductByGproductId) {
+      res.status(409).json({
+        error: `Product with gproductId ${gproductId} already exists in shop ${shopId}`,
+        data: null,
+      });
+    }
+
     const existingProductBySKU = await db.product.findUnique({
       where: { sku },
     });
@@ -44,17 +44,6 @@ export const createProduct: RequestHandler = async (req, res) => {
     if (existingProductBySKU) {
       res.status(409).json({
         error: `Product SKU ${sku} already exists`,
-        data: null,
-      });
-      return;
-    }
-    const existingProductByProductCode = await db.product.findUnique({
-      where: { sku },
-    });
-
-    if (existingProductByProductCode) {
-      res.status(409).json({
-        error: `Product Code ${productCode} already exists`,
         data: null,
       });
       return;
@@ -76,24 +65,17 @@ export const createProduct: RequestHandler = async (req, res) => {
 
     const newProduct = await db.product.create({
       data: {
-        name,
-        description,
+        gproductId,
         batchNumber,
         barcode,
-        image,
-        gst,
         alertQty,
         stockQty,
         price,
         sku,
-        productCode,
-        slug,
         supplierId,
         unitId,
-        brandId,
-        categoryId,
-        expiryDate,
         shopId,
+        expiryDate,
       },
     });
 
@@ -161,24 +143,17 @@ export const updateProductById: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      name,
-      description,
+      gproductId,
       batchNumber,
       barcode,
-      image,
-      gst,
       alertQty,
       stockQty,
       price,
       sku,
-      productCode,
-      slug,
       supplierId,
       unitId,
-      brandId,
-      categoryId,
-      expiryDate,
       shopId,
+      expiryDate,
     } = req.body;
 
     const existingProduct = await db.product.findUnique({
@@ -194,20 +169,7 @@ export const updateProductById: RequestHandler = async (req, res) => {
       });
       return;
     }
-    // if slug,barcode,sku,productCode are unique
-    if (slug && slug !== existingProduct.slug) {
-      const existingProductBySlug = await db.product.findUnique({
-        where: { slug },
-      });
 
-      if (existingProductBySlug) {
-        res.status(409).json({
-          data: null,
-          error: `Product ${name} already exists`,
-        });
-        return;
-      }
-    }
     if (sku && sku !== existingProduct.sku) {
       const existingProductBySKU = await db.product.findUnique({
         where: { sku },
@@ -221,6 +183,7 @@ export const updateProductById: RequestHandler = async (req, res) => {
         return;
       }
     }
+
     if (barcode && barcode !== existingProduct.barcode) {
       const existingProductByBarcode = await db.product.findUnique({
         where: { barcode },
@@ -234,43 +197,23 @@ export const updateProductById: RequestHandler = async (req, res) => {
         return;
       }
     }
-    if (productCode && productCode !== existingProduct.productCode) {
-      const existingProductByProductCode = await db.product.findUnique({
-        where: { productCode },
-      });
-
-      if (existingProductByProductCode) {
-        res.status(409).json({
-          data: null,
-          error: `Product Code ${productCode} already exists`,
-        });
-        return;
-      }
-    }
 
     const updatedProduct = await db.product.update({
       where: {
         id,
       },
       data: {
-        name,
-        description,
+        gproductId,
         batchNumber,
         barcode,
-        image,
-        gst,
         alertQty,
         stockQty,
         price,
         sku,
-        productCode,
-        slug,
         supplierId,
         unitId,
-        brandId,
-        categoryId,
-        expiryDate,
         shopId,
+        expiryDate,
       },
     });
 

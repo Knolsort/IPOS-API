@@ -86,7 +86,7 @@ model Brand {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   slug      String    @unique
-  products  Product[]
+  gproducts  GProduct[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -95,36 +95,48 @@ model Category {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   slug      String    @unique
-  products  Product[]
+  gproducts  GProduct[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 
-model Product {
+
+model GProduct {
   id                 String              @id @default(auto()) @map("_id") @db.ObjectId
   name               String
+  otherNames         String[]
   description        String?
+  image              String[]            @default(["https://cdn-icons-png.flaticon.com/128/10446/10446694.png"])
+  gst                Float?
+  productCode        String              @unique
+  slug               String              @unique
+  createrId          String              @default("admin") //defualt admin if shop created this product then shop id. 
+  brandId            String              @db.ObjectId
+  categoryId         String              @db.ObjectId
+  brand              Brand               @relation(fields: [brandId], references: [id])
+  category           Category            @relation(fields: [categoryId], references: [id])
+  products           Product[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+}
+
+model Product {
+  id                 String              @id @default(auto()) @map("_id") @db.ObjectId
+  gproductId         String              @db.ObjectId
   batchNumber        String?
   barcode            String?             @unique
-  image              String?             @default("https://cdn-icons-png.flaticon.com/128/10446/10446694.png")
-  gst                Int?
   alertQty           Int
   stockQty           Int
   price              Int
   sku                String              @unique
-  productCode        String              @unique
-  slug               String              @unique
   supplierId         String              @db.ObjectId
   unitId             String              @db.ObjectId
-  shopId             String              @default("6741956bc0f984c5cea3df43") @db.ObjectId
-  brandId            String              @db.ObjectId
-  categoryId         String              @db.ObjectId
+  shopId             String              @db.ObjectId
   expiryDate         DateTime
   shop               Shop                @relation(fields: [shopId], references: [id])
   unit               Unit                @relation(fields: [unitId], references: [id])
-  brand              Brand               @relation(fields: [brandId], references: [id])
-  category           Category            @relation(fields: [categoryId], references: [id])
   supplier           Supplier            @relation(fields: [supplierId], references: [id])
+  gproduct           GProduct            @relation(fields: [gproductId], references: [id])
   saleItems          SaleItem[]
   adjustmentItems    AdjustmentItem[]
   purchaseOrderItems PurchaseOrderItem[]

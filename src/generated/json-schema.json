@@ -237,10 +237,10 @@
         "slug": {
           "type": "string"
         },
-        "products": {
+        "gproducts": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Product"
+            "$ref": "#/definitions/GProduct"
           }
         },
         "createdAt": {
@@ -265,6 +265,71 @@
         "slug": {
           "type": "string"
         },
+        "gproducts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GProduct"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "GProduct": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "otherNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "image": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gst": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "productCode": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "createrId": {
+          "type": "string",
+          "default": "admin"
+        },
+        "brand": {
+          "$ref": "#/definitions/Brand"
+        },
+        "category": {
+          "$ref": "#/definitions/Category"
+        },
         "products": {
           "type": "array",
           "items": {
@@ -287,15 +352,6 @@
         "id": {
           "type": "string"
         },
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
         "batchNumber": {
           "type": [
             "string",
@@ -305,19 +361,6 @@
         "barcode": {
           "type": [
             "string",
-            "null"
-          ]
-        },
-        "image": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "default": "https://cdn-icons-png.flaticon.com/128/10446/10446694.png"
-        },
-        "gst": {
-          "type": [
-            "integer",
             "null"
           ]
         },
@@ -333,12 +376,6 @@
         "sku": {
           "type": "string"
         },
-        "productCode": {
-          "type": "string"
-        },
-        "slug": {
-          "type": "string"
-        },
         "expiryDate": {
           "type": "string",
           "format": "date-time"
@@ -349,14 +386,11 @@
         "unit": {
           "$ref": "#/definitions/Unit"
         },
-        "brand": {
-          "$ref": "#/definitions/Brand"
-        },
-        "category": {
-          "$ref": "#/definitions/Category"
-        },
         "supplier": {
           "$ref": "#/definitions/Supplier"
+        },
+        "gproduct": {
+          "$ref": "#/definitions/GProduct"
         },
         "saleItems": {
           "type": "array",
@@ -814,6 +848,9 @@
     },
     "category": {
       "$ref": "#/definitions/Category"
+    },
+    "gProduct": {
+      "$ref": "#/definitions/GProduct"
     },
     "product": {
       "$ref": "#/definitions/Product"
