@@ -27,7 +27,7 @@ export const createProduct: RequestHandler = async (req, res) => {
 
     //Check if product already exists
     const existingProductByGproductId = await db.product.findFirst({
-      where: { shopId, gproductId, },
+      where: { shopId, gproductId },
     });
 
     if (existingProductByGproductId) {
