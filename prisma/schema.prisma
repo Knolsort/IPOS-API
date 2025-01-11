@@ -104,16 +104,16 @@ model Category {
 model GProduct {
   id                 String              @id @default(auto()) @map("_id") @db.ObjectId
   name               String
-  otherNames         String[]
+  otherNames         String[]            @default([])
   description        String?
   image              String[]            @default(["https://cdn-icons-png.flaticon.com/128/10446/10446694.png"])
   gst                Float?
   productCode        String              @unique
   slug               String              @unique
   createrId          String              @default("admin") //defualt admin if shop created this product then shop id. 
-  brandId            String              @db.ObjectId
+  brandId            String?             @db.ObjectId
   categoryId         String              @db.ObjectId
-  brand              Brand               @relation(fields: [brandId], references: [id])
+  brand              Brand?              @relation(fields: [brandId], references: [id])
   category           Category            @relation(fields: [categoryId], references: [id])
   products           Product[]
   createdAt          DateTime            @default(now())
