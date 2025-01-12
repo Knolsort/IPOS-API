@@ -325,7 +325,14 @@
           "default": "admin"
         },
         "brand": {
-          "$ref": "#/definitions/Brand"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Brand"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "category": {
           "$ref": "#/definitions/Category"

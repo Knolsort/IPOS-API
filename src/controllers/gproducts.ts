@@ -17,9 +17,9 @@ export const createGProduct: RequestHandler = async (req, res) => {
     } = req.body;
 
     // Validate required fields
-    if (!name || !productCode || !slug || !brandId || !categoryId) {
+    if (!name || !productCode || !slug || !categoryId) {
       res.status(400).json({
-        error: "Name, productCode, slug, brandId, and categoryId are required.",
+        error: "Name, productCode, slug, and categoryId are required.",
         data: null,
       });
     }
