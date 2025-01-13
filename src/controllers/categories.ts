@@ -3,7 +3,7 @@ import { db } from "../db/db";
 
 export const createCategory: RequestHandler = async (req, res) => {
   try {
-    const { name, slug } = req.body;
+    const { name, slug, image } = req.body;
 
     const existingCategory = await db.category.findUnique({
       where: { slug },
@@ -18,7 +18,7 @@ export const createCategory: RequestHandler = async (req, res) => {
     }
 
     const newCategory = await db.category.create({
-      data: { name, slug },
+      data: { name, slug, image },
     });
 
     res.status(201).json({
@@ -81,12 +81,10 @@ export const getSingleCategory: RequestHandler = async (req, res) => {
   }
 };
 
-
-
 export const updateCategoryById: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, slug } = req.body;
+    const { name, slug, image } = req.body;
 
     const existingCategory = await db.category.findUnique({
       where: {
@@ -122,6 +120,7 @@ export const updateCategoryById: RequestHandler = async (req, res) => {
       data: {
         name,
         slug,
+        image,
       },
     });
 

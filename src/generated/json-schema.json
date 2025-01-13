@@ -265,6 +265,12 @@
         "slug": {
           "type": "string"
         },
+        "image": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "gproducts": {
           "type": "array",
           "items": {
