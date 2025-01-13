@@ -96,6 +96,9 @@ export const getProducts: RequestHandler = async (req, res) => {
   try {
     const products = await db.product.findMany({
       orderBy: { createdAt: "desc" },
+      include: {
+         gproduct: true,
+      }
     });
 
     res.status(200).json({
