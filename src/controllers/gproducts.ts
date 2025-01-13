@@ -136,7 +136,7 @@ export const updateGProductById: RequestHandler = async (req, res) => {
       productCode,
       slug,
       shopId, // Optional: shopId if the creator is a shop user
-      brandId,
+      brandId, // Optional
       categoryId,
     } = req.body;
 
