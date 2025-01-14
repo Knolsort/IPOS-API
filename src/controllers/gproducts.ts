@@ -11,7 +11,8 @@ export const createGProduct: RequestHandler = async (req, res) => {
       gst,
       productCode,
       slug,
-      shopId, // Optional: shopId if the creator is a shop user
+      shopId,
+      unitId,
       brandId,
       categoryId,
     } = req.body;
@@ -60,6 +61,7 @@ export const createGProduct: RequestHandler = async (req, res) => {
         slug,
         createrId,
         brandId,
+        unitId,
         categoryId,
       },
     });
@@ -135,8 +137,9 @@ export const updateGProductById: RequestHandler = async (req, res) => {
       gst,
       productCode,
       slug,
-      shopId, // Optional: shopId if the creator is a shop user
-      brandId, // Optional
+      shopId,
+      unitId,
+      brandId,
       categoryId,
     } = req.body;
 
@@ -199,6 +202,7 @@ export const updateGProductById: RequestHandler = async (req, res) => {
         slug,
         createrId,
         brandId,
+        unitId,
         categoryId,
       },
     });

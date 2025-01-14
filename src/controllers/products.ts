@@ -12,7 +12,6 @@ export const createProduct: RequestHandler = async (req, res) => {
       price,
       sku,
       supplierId,
-      unitId,
       shopId,
       expiryDate,
     } = req.body;
@@ -73,7 +72,6 @@ export const createProduct: RequestHandler = async (req, res) => {
         price,
         sku,
         supplierId,
-        unitId,
         shopId,
         expiryDate,
       },
@@ -97,8 +95,8 @@ export const getProducts: RequestHandler = async (req, res) => {
     const products = await db.product.findMany({
       orderBy: { createdAt: "desc" },
       include: {
-         gproduct: true,
-      }
+        gproduct: true,
+      },
     });
 
     res.status(200).json({
@@ -154,7 +152,6 @@ export const updateProductById: RequestHandler = async (req, res) => {
       price,
       sku,
       supplierId,
-      unitId,
       shopId,
       expiryDate,
     } = req.body;
@@ -214,7 +211,6 @@ export const updateProductById: RequestHandler = async (req, res) => {
         price,
         sku,
         supplierId,
-        unitId,
         shopId,
         expiryDate,
       },

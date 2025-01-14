@@ -209,10 +209,10 @@
         "slug": {
           "type": "string"
         },
-        "products": {
+        "gProducts": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Product"
+            "$ref": "#/definitions/GProduct"
           }
         },
         "createdAt": {
@@ -330,6 +330,9 @@
           "type": "string",
           "default": "admin"
         },
+        "unit": {
+          "$ref": "#/definitions/Unit"
+        },
         "brand": {
           "anyOf": [
             {
@@ -390,14 +393,13 @@
           "type": "string"
         },
         "expiryDate": {
-          "type": "string",
-          "format": "date-time"
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "shop": {
           "$ref": "#/definitions/Shop"
-        },
-        "unit": {
-          "$ref": "#/definitions/Unit"
         },
         "supplier": {
           "$ref": "#/definitions/Supplier"
