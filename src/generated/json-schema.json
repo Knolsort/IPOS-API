@@ -320,6 +320,10 @@
             "null"
           ]
         },
+        "assured": {
+          "type": "boolean",
+          "default": false
+        },
         "productCode": {
           "type": "string"
         },
