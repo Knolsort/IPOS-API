@@ -75,7 +75,7 @@ model Supplier {
 model Unit {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   name         String
-  abbreviation String
+  abbreviation String[]
   slug         String     @unique
   gProducts    GProduct[]
   createdAt    DateTime   @default(now())
