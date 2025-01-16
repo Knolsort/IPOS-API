@@ -372,12 +372,6 @@
         "id": {
           "type": "string"
         },
-        "batchNumber": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
         "barcode": {
           "type": [
             "string",
@@ -391,7 +385,13 @@
           "type": "integer"
         },
         "price": {
-          "type": "integer"
+          "type": "number"
+        },
+        "offerPrice": {
+          "type": [
+            "number",
+            "null"
+          ]
         },
         "sku": {
           "type": "string"
@@ -406,7 +406,14 @@
           "$ref": "#/definitions/Shop"
         },
         "supplier": {
-          "$ref": "#/definitions/Supplier"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Supplier"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "gproduct": {
           "$ref": "#/definitions/GProduct"

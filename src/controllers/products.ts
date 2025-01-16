@@ -5,11 +5,11 @@ export const createProduct: RequestHandler = async (req, res) => {
   try {
     const {
       gproductId,
-      batchNumber,
       barcode,
       alertQty,
       stockQty,
       price,
+      offerPrice,
       sku,
       supplierId,
       shopId,
@@ -65,11 +65,11 @@ export const createProduct: RequestHandler = async (req, res) => {
     const newProduct = await db.product.create({
       data: {
         gproductId,
-        batchNumber,
         barcode,
         alertQty,
         stockQty,
         price,
+        offerPrice,
         sku,
         supplierId,
         shopId,
@@ -145,11 +145,11 @@ export const updateProductById: RequestHandler = async (req, res) => {
     const { id } = req.params;
     const {
       gproductId,
-      batchNumber,
       barcode,
       alertQty,
       stockQty,
       price,
+      offerPrice,
       sku,
       supplierId,
       shopId,
@@ -204,11 +204,11 @@ export const updateProductById: RequestHandler = async (req, res) => {
       },
       data: {
         gproductId,
-        batchNumber,
         barcode,
         alertQty,
         stockQty,
         price,
+        offerPrice,
         sku,
         supplierId,
         shopId,
