@@ -77,7 +77,7 @@ model Unit {
   name         String
   abbreviation String[]
   slug         String     @unique
-  gProducts    GProduct[]
+  // gProducts    GProduct[]
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 }
@@ -108,14 +108,13 @@ model GProduct {
   description String?
   image       String[]  @default(["https://cdn-icons-png.flaticon.com/128/10446/10446694.png"])
   gst         Float?
-  assured     Boolean @default(false)
+  assured     Boolean   @default(false)
   productCode String    @unique
   slug        String    @unique
   createrId   String    @default("admin")
-  unitId      String    @db.ObjectId
+  unitTypes   String[]
   brandId     String?   @db.ObjectId
   categoryId  String    @db.ObjectId
-  unit        Unit      @relation(fields: [unitId], references: [id])
   brand       Brand?    @relation(fields: [brandId], references: [id])
   category    Category  @relation(fields: [categoryId], references: [id])
   products    Product[]
@@ -124,18 +123,18 @@ model GProduct {
 }
 
 model Product {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  gproductId  String   @db.ObjectId
-  batchNumber String?
-  barcode     String?  @unique
-  alertQty    Int
-  stockQty    Int
-  price       Int
-  sku         String   @unique
-  supplierId  String   @db.ObjectId
-  shopId      String   @db.ObjectId
-  expiryDate  String[]
-  shop        Shop     @relation(fields: [shopId], references: [id])
+  id                 String              @id @default(auto()) @map("_id") @db.ObjectId
+  gproductId         String              @db.ObjectId
+  batchNumber        String?
+  barcode            String?             @unique
+  alertQty           Int
+  stockQty           Int
+  price              Int
+  sku                String              @unique
+  supplierId         String              @db.ObjectId
+  shopId             String              @db.ObjectId
+  expiryDate         String[]
+  shop               Shop                @relation(fields: [shopId], references: [id])
   supplier           Supplier            @relation(fields: [supplierId], references: [id])
   gproduct           GProduct            @relation(fields: [gproductId], references: [id])
   saleItems          SaleItem[]
