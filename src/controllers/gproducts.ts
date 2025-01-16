@@ -13,7 +13,7 @@ export const createGProduct: RequestHandler = async (req, res) => {
       slug,
       assured,
       shopId,
-      unitId,
+      unitTypes,
       brandId,
       categoryId,
     } = req.body;
@@ -63,7 +63,7 @@ export const createGProduct: RequestHandler = async (req, res) => {
         assured,
         createrId,
         brandId,
-        unitId,
+        unitTypes,
         categoryId,
       },
     });
@@ -141,7 +141,7 @@ export const updateGProductById: RequestHandler = async (req, res) => {
       slug,
       assured,
       shopId,
-      unitId,
+      unitTypes,
       brandId,
       categoryId,
     } = req.body;
@@ -206,7 +206,7 @@ export const updateGProductById: RequestHandler = async (req, res) => {
         assured,
         createrId,
         brandId,
-        unitId,
+        unitTypes,
         categoryId,
       },
     });
