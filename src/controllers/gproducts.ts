@@ -85,6 +85,10 @@ export const getGProducts: RequestHandler = async (req, res) => {
   try {
     const products = await db.gProduct.findMany({
       orderBy: { createdAt: "desc" },
+      include: {
+        category: true,
+        brand: true
+      }
     });
 
     res.status(200).json({

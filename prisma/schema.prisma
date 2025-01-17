@@ -132,9 +132,9 @@ model Product {
   offerPrice         Float?
   sku                String              @unique
   supplierId         String?             @db.ObjectId
-  shopId             String              @db.ObjectId
+  shopSlug           String              
   expiryDate         String[]
-  shop               Shop                @relation(fields: [shopId], references: [id])
+  shop               Shop                @relation(fields: [shopSlug], references: [slug])
   supplier           Supplier?           @relation(fields: [supplierId], references: [id])
   gproduct           GProduct            @relation(fields: [gproductId], references: [id])
   saleItems          SaleItem[]

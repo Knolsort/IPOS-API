@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { db } from "../db/db";
 
+
 export const createShop: RequestHandler = async (req, res) => {
   try {
     const {
@@ -19,6 +20,31 @@ export const createShop: RequestHandler = async (req, res) => {
     const existingShop = await db.shop.findUnique({
       where: { slug },
     });
+    if (!adminId) {
+      res.status(400).json({
+        error: "gproductId and shopId are required",
+        data: null,
+      });
+    }
+
+    if (!adminId) {
+      res.status(400).json({
+        error: "adminId is required",
+        data: null,
+      });
+    }
+
+    // Check if admin already has a shop
+    const existingAdminShop = await db.shop.findFirst({
+      where: { adminId },
+    });
+
+    if (existingAdminShop) {
+      res.status(409).json({
+        error: "This admin already has a shop",
+        data: null,
+      });
+    }
 
     if (existingShop) {
       res.status(409).json({

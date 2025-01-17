@@ -31,7 +31,7 @@ const productRouter = express.Router();
  *               $ref: '#/components/schemas/Product'
  */
 
-productRouter.post("/products", createProduct);
+productRouter.post("/:shopSlug/products", createProduct);
 
 /**
  * @swagger
@@ -56,7 +56,7 @@ productRouter.post("/products", createProduct);
  *               items:
  *                 $ref: '#/components/schemas/Product'
  */
-productRouter.get("/products", getProducts);
+productRouter.get("/:shopSlug/products", getProducts);
 
 /**
  * @swagger

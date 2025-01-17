@@ -12,26 +12,26 @@ export const createProduct: RequestHandler = async (req, res) => {
       offerPrice,
       sku,
       supplierId,
-      shopId,
+
       expiryDate,
     } = req.body;
+    const { shopSlug } = req.params;
 
     // Validate required fields
-    if (!gproductId || !shopId) {
+    if (!gproductId || !shopSlug) {
       res.status(400).json({
-        error: "gproductId and shopId are required",
         data: null,
       });
     }
 
     //Check if product already exists
     const existingProductByGproductId = await db.product.findFirst({
-      where: { shopId, gproductId },
+      where: { shopSlug, gproductId },
     });
 
     if (existingProductByGproductId) {
       res.status(409).json({
-        error: `Product with gproductId ${gproductId} already exists in shop ${shopId}`,
+        error: `Product with gproductId ${gproductId} already exists in shop ${shopSlug}`,
         data: null,
       });
     }
@@ -72,7 +72,7 @@ export const createProduct: RequestHandler = async (req, res) => {
         offerPrice,
         sku,
         supplierId,
-        shopId,
+        shopSlug,
         expiryDate,
       },
     });
@@ -91,8 +91,12 @@ export const createProduct: RequestHandler = async (req, res) => {
 };
 
 export const getProducts: RequestHandler = async (req, res) => {
+  const { shopSlug } = req.params;
   try {
     const products = await db.product.findMany({
+      where: {
+        shopSlug,
+      },
       orderBy: { createdAt: "desc" },
       include: {
         gproduct: true,
@@ -152,7 +156,7 @@ export const updateProductById: RequestHandler = async (req, res) => {
       offerPrice,
       sku,
       supplierId,
-      shopId,
+      shopSlug,
       expiryDate,
     } = req.body;
 
@@ -211,7 +215,7 @@ export const updateProductById: RequestHandler = async (req, res) => {
         offerPrice,
         sku,
         supplierId,
-        shopId,
+        shopSlug,
         expiryDate,
       },
     });
