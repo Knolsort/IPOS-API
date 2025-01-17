@@ -12,7 +12,6 @@ export const createProduct: RequestHandler = async (req, res) => {
       offerPrice,
       sku,
       supplierId,
-
       expiryDate,
     } = req.body;
     const { shopSlug } = req.params;
@@ -118,9 +117,9 @@ export const getProducts: RequestHandler = async (req, res) => {
 
 export const getSingleProduct: RequestHandler = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { shopSlug, id } = req.params;
     const existingProduct = await db.product.findUnique({
-      where: { id },
+      where: { id, shopSlug },
     });
 
     if (!existingProduct) {
@@ -146,7 +145,7 @@ export const getSingleProduct: RequestHandler = async (req, res) => {
 
 export const updateProductById: RequestHandler = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { shopSlug, id } = req.params;
     const {
       gproductId,
       barcode,
@@ -156,13 +155,13 @@ export const updateProductById: RequestHandler = async (req, res) => {
       offerPrice,
       sku,
       supplierId,
-      shopSlug,
       expiryDate,
     } = req.body;
 
     const existingProduct = await db.product.findUnique({
       where: {
         id,
+        shopSlug,
       },
     });
 
@@ -234,11 +233,12 @@ export const updateProductById: RequestHandler = async (req, res) => {
 };
 
 export const deleteProductById: RequestHandler = async (req, res) => {
-  const { id } = req.params;
+  const { id, shopSlug } = req.params;
   try {
     const product = await db.product.findUnique({
       where: {
         id,
+        shopSlug,
       },
     });
     if (!product) {

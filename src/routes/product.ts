@@ -11,7 +11,7 @@ const productRouter = express.Router();
 
 /**
  * @swagger
- * /api/v1/products:
+ * /api/v1/:{shopSlug}/products:
  *   post:
  *     summary: Create a new Product
  *     tags: [Products]
@@ -42,7 +42,7 @@ productRouter.post("/:shopSlug/products", createProduct);
 
 /**
  * @swagger
- *  /api/v1/products:
+ *  /api/v1/:{shopSlug}/products:
  *   get:
  *     summary: Get all products
  *     tags: [Products]
@@ -60,7 +60,7 @@ productRouter.get("/:shopSlug/products", getProducts);
 
 /**
  * @swagger
- *  /api/v1/products/:{id}:
+ *  /api/v1/:{shopSlug}/products/:{id}:
  *   get:
  *     summary: Get a single product by ID
  *     tags: [Products]
@@ -81,11 +81,11 @@ productRouter.get("/:shopSlug/products", getProducts);
  *       404:
  *         description: Product not found
  */
-productRouter.get("/products/:id", getSingleProduct);
+productRouter.get("/:shopSlug/products/:id", getSingleProduct);
 
 /**
  * @swagger
- *  /api/v1/products/:{id}:
+ *  /api/v1/:{shopSlug}/products/:{id}:
  *   put:
  *     summary: Update a product by ID
  *     tags: [Products]
@@ -112,11 +112,11 @@ productRouter.get("/products/:id", getSingleProduct);
  *       404:
  *         description: Product not found
  */
-productRouter.put("/products/:id", updateProductById);
+productRouter.put("/:shopSlug/products/:id", updateProductById);
 
 /**
  * @swagger
- *  /api/v1/products/:{id}:
+ *  /api/v1/:{shopSlug}/products/:{id}:
  *   delete:
  *     summary: Delete a product by ID
  *     tags: [Products]
@@ -133,6 +133,6 @@ productRouter.put("/products/:id", updateProductById);
  *       404:
  *         description: Product not found
  */
-productRouter.delete("/products/:id", deleteProductById);
+productRouter.delete("/:shopSlug/products/:id", deleteProductById);
 
 export default productRouter;
