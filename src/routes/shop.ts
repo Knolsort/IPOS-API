@@ -3,10 +3,15 @@ import {
   getShopAttendants,
   getShops,
   getSingleShop,
+  slugUnique,
 } from "../controllers/shops";
 import express from "express";
 
 const shopRouter = express.Router();
+
+
+shopRouter.post("/shops/slugUnique", slugUnique);
+
 
 /**
  * @swagger

@@ -1,6 +1,20 @@
 import { RequestHandler } from "express";
 import { db } from "../db/db";
 
+export const slugUnique: RequestHandler = async (req, res) => {
+  const { slug } = req.body;
+  try {
+    const existingSlug = await db.shop.findUnique({
+      where: { slug },
+    });
+    if (existingSlug) {
+      res.status(400).json({
+        error: "slug already exists",
+        data: null,
+      });
+    }
+  } catch (error) {}
+};
 
 export const createShop: RequestHandler = async (req, res) => {
   try {
