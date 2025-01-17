@@ -98,8 +98,16 @@ export const getProducts: RequestHandler = async (req, res) => {
       },
       orderBy: { createdAt: "desc" },
       include: {
-        gproduct: true,
+        gproduct: {
+          include: {
+            brand: true,
+            category: true
+          }
+        },
+        
+        
       },
+      
     });
 
     res.status(200).json({
