@@ -7,6 +7,7 @@ export const createGProduct: RequestHandler = async (req, res) => {
       name,
       otherNames,
       description,
+      barcode,
       image,
       gst,
       productCode,
@@ -56,6 +57,7 @@ export const createGProduct: RequestHandler = async (req, res) => {
         name,
         otherNames,
         description,
+        barcode,
         image,
         gst,
         productCode,
@@ -87,8 +89,8 @@ export const getGProducts: RequestHandler = async (req, res) => {
       orderBy: { createdAt: "desc" },
       include: {
         category: true,
-        brand: true
-      }
+        brand: true,
+      },
     });
 
     res.status(200).json({
@@ -139,6 +141,7 @@ export const updateGProductById: RequestHandler = async (req, res) => {
       name,
       otherNames,
       description,
+      barcode,
       image,
       gst,
       productCode,
@@ -195,6 +198,21 @@ export const updateGProductById: RequestHandler = async (req, res) => {
       }
     }
 
+    if (barcode && barcode !== existingProduct.barcode) {
+      const existingProductByBarcode = await db.gProduct.findUnique({
+        where: { barcode }, 
+      });
+
+      if (existingProductByBarcode) {
+        res.status(409).json({  
+          data: null,
+          error: `Barcode ${barcode} already exists`,
+        });
+        return;
+      }
+    }
+    
+
     const updatedProduct = await db.gProduct.update({
       where: {
         id,
@@ -203,6 +221,7 @@ export const updateGProductById: RequestHandler = async (req, res) => {
         name,
         otherNames,
         description,
+        barcode,
         image,
         gst,
         productCode,

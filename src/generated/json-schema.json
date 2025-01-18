@@ -321,6 +321,12 @@
           "type": "boolean",
           "default": false
         },
+        "barcode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "productCode": {
           "type": "string"
         },

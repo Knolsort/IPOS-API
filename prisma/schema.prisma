@@ -109,6 +109,7 @@ model GProduct {
   image       String[]  @default(["https://cdn-icons-png.flaticon.com/128/10446/10446694.png"])
   gst         Float?
   assured     Boolean   @default(false)
+  barcode     String?   @unique
   productCode String    @unique
   slug        String    @unique
   createrId   String    @default("admin")
@@ -125,14 +126,14 @@ model GProduct {
 model Product {
   id                 String              @id @default(auto()) @map("_id") @db.ObjectId
   gproductId         String              @db.ObjectId
-  barcode            String?             @unique
+  barcode            String?            
   alertQty           Int
   stockQty           Int
   price              Float
   offerPrice         Float?
   sku                String              @unique
   supplierId         String?             @db.ObjectId
-  shopSlug           String              
+  shopSlug           String
   expiryDate         String[]
   shop               Shop                @relation(fields: [shopSlug], references: [slug])
   supplier           Supplier?           @relation(fields: [supplierId], references: [id])
