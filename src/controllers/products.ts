@@ -48,7 +48,7 @@ export const createProduct: RequestHandler = async (req, res) => {
     }
 
     if (barcode) {
-      const existingProductByBarcode = await db.product.findUnique({
+      const existingProductByBarcode = await db.gProduct.findUnique({
         where: { barcode },
       });
 
@@ -101,13 +101,10 @@ export const getProducts: RequestHandler = async (req, res) => {
         gproduct: {
           include: {
             brand: true,
-            category: true
-          }
+            category: true,
+          },
         },
-        
-        
       },
-      
     });
 
     res.status(200).json({
@@ -196,7 +193,7 @@ export const updateProductById: RequestHandler = async (req, res) => {
     }
 
     if (barcode && barcode !== existingProduct.barcode) {
-      const existingProductByBarcode = await db.product.findUnique({
+      const existingProductByBarcode = await db.gProduct.findUnique({
         where: { barcode },
       });
 
