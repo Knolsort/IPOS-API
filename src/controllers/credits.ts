@@ -11,20 +11,32 @@ export const createCredit: RequestHandler = async (req, res) => {
   } = req.body;
 
   try {
-    const newCustomer = await db.credit.create({
-      data: {
-        maxCreditLimit,
-        maxCreditDays,
-        unpaidCreditAmount,
+    const existingCustomer = await db.credit.findFirst({
+      where: {
         customerId,
-        shopId,
       },
     });
 
-    res.status(201).json({
-      data: newCustomer,
-      error: null,
-    });
+    if (!existingCustomer) {
+      res.status(409).json({
+        data: null,
+        error: "Customer not exists",
+      });
+      const newCustomer = await db.credit.create({
+        data: {
+          maxCreditLimit,
+          maxCreditDays,
+          unpaidCreditAmount,
+          customerId,
+          shopId,
+        },
+      });
+
+      res.status(201).json({
+        data: newCustomer,
+        error: null,
+      });
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({

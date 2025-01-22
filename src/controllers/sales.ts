@@ -30,7 +30,7 @@ export const createSale: RequestHandler = async (req, res) => {
 
       if (balanceAmount > 0) {
         // Check if the customer has enough credit limit
-        const existingCustomer = await transaction.customer.findUnique({
+        const existingCustomer = await transaction.credit.findUnique({
           where: {
             id: customerId,
           },
@@ -49,10 +49,11 @@ export const createSale: RequestHandler = async (req, res) => {
         }
         // Update the customer unpaidAmount
         // Update the customer  MaxCreditAmount
-        const updatedCustomer = await transaction.customer.update({
+        const updatedCustomer = await transaction.credit.update({
           where: {
             id: customerId,
           },
+
           data: {
             unpaidCreditAmount: {
               increment: balanceAmount,
@@ -206,14 +207,14 @@ export const getShopSales: RequestHandler = async (req, res) => {
 
   const exitingShop = await db.shop.findUnique({
     where: {
-      id: shopId
-    }
-  })
-  if(!exitingShop) {
-     res.status(404).json({
+      id: shopId,
+    },
+  });
+  if (!exitingShop) {
+    res.status(404).json({
       error: `Shop with ID: ${shopId} not found`,
-      data: null
-    })
+      data: null,
+    });
   }
   // Define time periods
   const todayStart = startOfDay(new Date());

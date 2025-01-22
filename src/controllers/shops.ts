@@ -13,7 +13,12 @@ export const slugUnique: RequestHandler = async (req, res) => {
         data: null,
       });
     }
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({   
+      data: null,
+      error: "Something went wrong",
+    })
+  }
 };
 
 export const createShop: RequestHandler = async (req, res) => {
