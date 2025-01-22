@@ -30,18 +30,18 @@ export const createSale: RequestHandler = async (req, res) => {
 
       if (balanceAmount > 0) {
         // Check if the customer has enough credit limit
-        const existingCustomer = await transaction.credit.findUnique({
+        const existingCredit = await transaction.credit.findFirst({
           where: {
-            id: customerId,
+            shopId,
           },
         });
-        if (!existingCustomer) {
+        if (!existingCredit) {
           return res.status(404).json({
-            error: `Customer with ID: ${customerId} not found`,
+            error: "Customer Credit not found",
             data: null,
           });
         }
-        if (balanceAmount > existingCustomer?.maxCreditLimit) {
+        if (balanceAmount > existingCredit?.maxCreditLimit) {
           return res.status(403).json({
             error: `This Customer not eligible for this Credit ${balanceAmount}`,
             data: null,
