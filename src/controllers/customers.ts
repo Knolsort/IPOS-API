@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { db } from "../db/db";
 
 export const createCustomer: RequestHandler = async (req, res) => {
-  const { name, phone, maxCreditLimit, maxCreditDays } = req.body;
+  const { name, phone, image } = req.body;
 
   try {
     // Check if phone unique
@@ -20,9 +20,8 @@ export const createCustomer: RequestHandler = async (req, res) => {
     const newCustomer = await db.customer.create({
       data: {
         name,
+        image,
         phone,
-        maxCreditLimit,
-        maxCreditDays,
       },
     });
 

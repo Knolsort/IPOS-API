@@ -10,7 +10,39 @@
         "name": {
           "type": "string"
         },
+        "image": {
+          "type": "string",
+          "default": "https://cdn-icons-png.flaticon.com/128/10446/10446694.png"
+        },
         "phone": {
+          "type": "string"
+        },
+        "sales": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Sale"
+          }
+        },
+        "credit": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Credit"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Credit": {
+      "type": "object",
+      "properties": {
+        "id": {
           "type": "string"
         },
         "maxCreditLimit": {
@@ -23,11 +55,11 @@
           "type": "integer",
           "default": 0
         },
-        "sales": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Sale"
-          }
+        "shop": {
+          "$ref": "#/definitions/Shop"
+        },
+        "customer": {
+          "$ref": "#/definitions/Customer"
         },
         "createdAt": {
           "type": "string",
@@ -143,14 +175,20 @@
             "$ref": "#/definitions/Sale"
           }
         },
-        "admin": {
-          "$ref": "#/definitions/User"
-        },
         "expenses": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/Expense"
           }
+        },
+        "credit": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Credit"
+          }
+        },
+        "admin": {
+          "$ref": "#/definitions/User"
         }
       }
     },
@@ -862,6 +900,9 @@
   "properties": {
     "customer": {
       "$ref": "#/definitions/Customer"
+    },
+    "credit": {
+      "$ref": "#/definitions/Credit"
     },
     "user": {
       "$ref": "#/definitions/User"

@@ -19,13 +19,25 @@ datasource db {
 }
 
 model Customer {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  image     String   @default("https://cdn-icons-png.flaticon.com/128/10446/10446694.png")
+  phone     String   @unique
+  sales     Sale[]
+  credit    Credit[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Credit {
   id                 String   @id @default(auto()) @map("_id") @db.ObjectId
-  name               String
-  phone              String   @unique
   maxCreditLimit     Float
   maxCreditDays      Int
   unpaidCreditAmount Int      @default(0)
-  sales              Sale[]
+  customerId         String   @db.ObjectId
+  shopId             String   @db.ObjectId
+  shop               Shop     @relation(fields: [shopId], references: [id])
+  customer           Customer @relation(fields: [customerId], references: [id])
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 }
@@ -57,8 +69,9 @@ model Shop {
   updatedAt      DateTime  @updatedAt
   products       Product[]
   sales          Sale[]
-  admin          User      @relation(fields: [adminId], references: [id])
   expenses       Expense[]
+  credit         Credit[]
+  admin          User      @relation(fields: [adminId], references: [id])
 }
 
 model Supplier {
@@ -126,7 +139,7 @@ model GProduct {
 model Product {
   id                 String              @id @default(auto()) @map("_id") @db.ObjectId
   gproductId         String              @db.ObjectId
-  barcode            String?            
+  barcode            String?
   alertQty           Int
   stockQty           Int
   price              Float

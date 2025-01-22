@@ -21,8 +21,9 @@ import notificationRouter from "./routes/notification";
 import adjustmentRouter from "./routes/adjustment";
 import purchaseRouter from "./routes/purchase";
 import path from "path";
-import { clerkMiddleware } from '@clerk/express'
+import { clerkMiddleware } from "@clerk/express";
 import gProductRouter from "./routes/gproduct";
+import creditRouter from "./routes/credit";
 
 dotenv.config();
 
@@ -30,12 +31,12 @@ const app = express();
 
 // Middleware
 
-// Clerk auth 
-app.use(clerkMiddleware())
+// Clerk auth
+app.use(clerkMiddleware());
 
 // Swagger UI
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
- 
+
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per windowMs
@@ -76,7 +77,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "home.html"));
 });
- 
+
 // API Routes
 app.use("/api/v1", customerRouter);
 app.use("/api/v1", userRouter);
@@ -94,6 +95,7 @@ app.use("/api/v1", expenseRouter);
 app.use("/api/v1", notificationRouter);
 app.use("/api/v1", adjustmentRouter);
 app.use("/api/v1", purchaseRouter);
+app.use("/api/v1", creditRouter);
 
 // Error handling middleware
 // app.use(
