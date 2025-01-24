@@ -59,28 +59,32 @@ export const getCustomers: RequestHandler = async (req, res) => {
   }
 };
 
-export const getSingleCustomer: RequestHandler = async (req, res) => {
-  const { id } = req.params;
+export const getCustomerSuggestions: RequestHandler = async (req, res) => {
+  const { phone } = req.body;
+
+  if (!phone || phone.length < 3) {
+    res.status(400).json({
+      data: null,
+      error: "Please provide at least 3 characters of the phone number",
+    });
+  }
 
   try {
-    const customer = await db.customer.findUnique({
-      where: { id },
+    const customers = await db.customer.findMany({
+      where: {
+        phone: {
+          startsWith: phone,
+        },
+      },
+      take: 10, // Limit the number of suggestions for performance
     });
 
-    if (!customer) {
-      res.status(404).json({
-        data: null,
-        error: "Customer not found",
-      });
-      return;
-    }
-
     res.status(200).json({
-      data: customer,
+      data: customers,
       error: null,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({
       data: null,
       error: "Something went wrong",
