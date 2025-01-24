@@ -1,4 +1,4 @@
-import { createCustomer, getCustomers, getSingleCustomer } from "../controllers/customers";
+import { createCustomer, getCustomers, getCustomerSuggestions } from "../controllers/customers";
 import express from "express";
 const customerRouter = express.Router();
 
@@ -68,6 +68,6 @@ customerRouter.get("/customers", getCustomers);
  *       404:
  *         description: Customer not found
  */
-customerRouter.get("/customers/:id", getSingleCustomer);
+customerRouter.get("/customers/suggestions", getCustomerSuggestions);
 
 export default customerRouter;
