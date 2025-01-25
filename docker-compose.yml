@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    container_name: ipos-api
+    ports:
+      - "3000:3000"
+    environment:
+      # Add your MongoDB Atlas connection string and other environment variables here
+      DATABASE_URL: "mongodb+srv://IPOSDatabase:c8ujyO2TIk0k2SOS@cluster0.r6jzp.mongodb.net/IPOS?retryWrites=true&w=majority"
+      SECRET_KEY: "cJXRlFYLx3ENpaf1DNQRDMdMLcWRHi2xzOGRjG4tagE="
+      CLERK_PUBLISHABLE_KEY: "pk_test_Y29ycmVjdC1jaGltcC0zMi5jbGVyay5hY2NvdW50cy5kZXYk"
+      CLERK_SECRET_KEY: "sk_test_XYdY6UX8XbWH9TSxhszlrnVB0SOd8ehVFBfNUsvCXF"
+      NODE_ENV: "production"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
