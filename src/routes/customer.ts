@@ -68,6 +68,6 @@ customerRouter.get("/customers", getCustomers);
  *       404:
  *         description: Customer not found
  */
-customerRouter.get("/customers/suggestions", getCustomerSuggestions);
+customerRouter.get("/customers/:phone", getCustomerSuggestions);
 
 export default customerRouter;

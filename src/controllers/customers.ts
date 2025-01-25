@@ -60,7 +60,7 @@ export const getCustomers: RequestHandler = async (req, res) => {
 };
 
 export const getCustomerSuggestions: RequestHandler = async (req, res) => {
-  const { phone } = req.body;
+  const { phone } = req.params;
 
   if (!phone || phone.length < 3) {
     res.status(400).json({
