@@ -29,6 +29,12 @@
             "$ref": "#/definitions/Credit"
           }
         },
+        "shop": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Shop"
+          }
+        },
         "createdAt": {
           "type": "string",
           "format": "date-time"
@@ -186,6 +192,16 @@
           "items": {
             "$ref": "#/definitions/Credit"
           }
+        },
+        "customers": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Customer"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "admin": {
           "$ref": "#/definitions/User"
@@ -548,7 +564,14 @@
           }
         },
         "customer": {
-          "$ref": "#/definitions/Customer"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Customer"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "createdAt": {
           "type": "string",

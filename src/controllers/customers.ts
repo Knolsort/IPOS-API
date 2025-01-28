@@ -2,14 +2,16 @@ import { RequestHandler } from "express";
 import { db } from "../db/db";
 
 export const createCustomer: RequestHandler = async (req, res) => {
-  const { name, phone, image } = req.body;
+  const { name, phone, image,shop } = req.body;
+
 
   try {
     // Check if phone unique
+    
+   
     const existingCustomerByPhone = await db.customer.findUnique({
       where: { phone },
     });
-
     if (existingCustomerByPhone) {
       res.status(409).json({
         error: `Phone number ${phone} is already in use`,
@@ -38,7 +40,7 @@ export const createCustomer: RequestHandler = async (req, res) => {
   }
 };
 
-export const getCustomers: RequestHandler = async (req, res) => {
+export const getCustomersByShop: RequestHandler = async (req, res) => {
   try {
     const customers = await db.customer.findMany({
       orderBy: {

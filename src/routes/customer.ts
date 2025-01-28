@@ -1,4 +1,4 @@
-import { createCustomer, getCustomers, getCustomerSuggestions } from "../controllers/customers";
+import { createCustomer, getCustomersByShop, getCustomerSuggestions } from "../controllers/customers";
 import express from "express";
 const customerRouter = express.Router();
 
@@ -42,7 +42,7 @@ customerRouter.post("/customers", createCustomer);
  *               items:
  *                 $ref: '#/components/schemas/Customer'
  */
-customerRouter.get("/customers", getCustomers);
+customerRouter.get("/customers", getCustomersByShop);
 
 /**
  * @swagger
