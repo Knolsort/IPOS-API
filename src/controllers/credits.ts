@@ -15,6 +15,7 @@ export const createCredit: RequestHandler = async (req, res) => {
 
     const existingCredits = await db.credit.findFirst({
       where: {
+        customerId,
         shopId,
       },
     });

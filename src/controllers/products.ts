@@ -36,7 +36,10 @@ export const createProduct: RequestHandler = async (req, res) => {
     }
 
     const existingProductBySKU = await db.product.findUnique({
-      where: { sku },
+      where: { shopSlug,sku },
+      include: {
+        shop: true
+      }
     });
 
     if (existingProductBySKU) {

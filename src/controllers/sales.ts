@@ -33,11 +33,12 @@ export const createSale: RequestHandler = async (req, res) => {
         const existingCredit = await transaction.credit.findFirst({
           where: {
             shopId,
+            customerId,
           },
         });
         if (!existingCredit) {
           return res.status(404).json({
-            error: "Customer Credit not found",
+            error: "Customer Credit not found for this shop",
             data: null,
           });
         }
@@ -51,7 +52,7 @@ export const createSale: RequestHandler = async (req, res) => {
         // Update the customer  MaxCreditAmount
         const updatedCustomer = await transaction.credit.update({
           where: {
-            id: customerId,
+            id: existingCredit.id,
           },
 
           data: {
@@ -64,12 +65,8 @@ export const createSale: RequestHandler = async (req, res) => {
             },
           },
         });
-        if (!updatedCustomer) {
-          return res.status(500).json({
-            error: `Failed to update customer unpaidAmount for customer ID: ${customerId}`,
-            data: null,
-          });
-        }
+      
+        
       }
       const sale = await transaction.sale.create({
         data: {
@@ -84,7 +81,7 @@ export const createSale: RequestHandler = async (req, res) => {
           transactionCode,
         },
       });
-      if (saleItems && saleItems.length > 0) {
+      if (saleItems?.length > 0) {
         for (const item of saleItems) {
           // Update Product stock quantity
           const updatedProduct = await transaction.product.update({
