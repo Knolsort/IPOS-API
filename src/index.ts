@@ -24,6 +24,7 @@ import path from "path";
 import { clerkMiddleware } from "@clerk/express";
 import gProductRouter from "./routes/gproduct";
 import creditRouter from "./routes/credit";
+import { healthCheck } from "./controllers/health";
 
 dotenv.config();
 
@@ -96,6 +97,7 @@ app.use("/api/v1", notificationRouter);
 app.use("/api/v1", adjustmentRouter);
 app.use("/api/v1", purchaseRouter);
 app.use("/api/v1", creditRouter);
+app.use("/api/v1/health", healthCheck);
 
 // Error handling middleware
 // app.use(
