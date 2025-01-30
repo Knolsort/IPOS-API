@@ -24,7 +24,8 @@ export const createCredit: RequestHandler = async (req, res) => {
       res.status(409).json({
         data: null,
         error: "Credit already exists for this shop",
-      });}
+      });
+    }
     const newCustomer = await db.credit.create({
       data: {
         maxCreditLimit,
@@ -58,6 +59,34 @@ export const getCredits: RequestHandler = async (req, res) => {
 
     res.status(200).json({
       data: customers,
+      error: null,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: null,
+      error: "Something went wrong",
+    });
+  }
+};
+
+export const getCreditsByShop: RequestHandler = async (req, res) => {
+  const { shopId } = req.body;
+  try {
+    const credit = await db.credit.findMany({
+      where: {
+        shopId,
+      },
+      include: {
+        customer: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    res.status(200).json({
+      data: credit,
       error: null,
     });
   } catch (error) {

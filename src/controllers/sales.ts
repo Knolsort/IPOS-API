@@ -65,8 +65,6 @@ export const createSale: RequestHandler = async (req, res) => {
             },
           },
         });
-      
-        
       }
       const sale = await transaction.sale.create({
         data: {
@@ -247,6 +245,9 @@ export const getShopSales: RequestHandler = async (req, res) => {
           lte: todayEnd,
         },
       },
+      include: {
+        customer: true,
+      },
     });
 
     const salesThisWeek = await db.sale.findMany({
@@ -256,6 +257,9 @@ export const getShopSales: RequestHandler = async (req, res) => {
           gte: weekStart,
           lte: weekEnd,
         },
+      },
+      include: {
+        customer: true,
       },
     });
 
@@ -267,11 +271,17 @@ export const getShopSales: RequestHandler = async (req, res) => {
           lte: monthEnd,
         },
       },
+      include: {
+        customer: true,
+      },
     });
 
     const salesAllTime = await db.sale.findMany({
       where: {
         shopId,
+      },
+      include: {
+        customer: true,
       },
     });
 

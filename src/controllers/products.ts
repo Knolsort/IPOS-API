@@ -50,19 +50,19 @@ export const createProduct: RequestHandler = async (req, res) => {
       return;
     }
 
-    if (barcode) {
-      const existingProductByBarcode = await db.gProduct.findUnique({
-        where: { barcode },
-      });
+    // if (barcode) {
+    //   const existingProductByBarcode = await db.gProduct.findUnique({
+    //     where: { barcode },
+    //   });
 
-      if (existingProductByBarcode) {
-        res.status(409).json({
-          error: `Product Barcode ${barcode} already exists`,
-          data: null,
-        });
-        return;
-      }
-    }
+    //   if (existingProductByBarcode) {
+    //     res.status(409).json({
+    //       error: `Product Barcode ${barcode} already exists`,
+    //       data: null,
+    //     });
+    //     return;
+    //   }
+    // }
 
     const newProduct = await db.product.create({
       data: {
