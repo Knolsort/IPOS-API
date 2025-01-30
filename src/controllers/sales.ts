@@ -349,7 +349,7 @@ export const getShopSalesTotalAmounts: RequestHandler = async (req, res) => {
 
         totalSalesByHandCash: sales
           .filter(
-            (sale) => sale.paymentMethod === "CASH" && sale.balanceAmount <= 0
+            (sale) => sale.paymentMethod === "CASH"
           )
           .reduce((total, { paidAmount }) => total + (paidAmount || 0), 0),
       };
