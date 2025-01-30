@@ -166,7 +166,7 @@ enum SaleType {
 enum paymentMethod {
   CASH
   UPI
-  AI
+  
 }
 
 model Sale {

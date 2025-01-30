@@ -528,8 +528,7 @@
           "default": "CASH",
           "enum": [
             "CASH",
-            "UPI",
-            "AI"
+            "UPI"
           ]
         },
         "transactionCode": {

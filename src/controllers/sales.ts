@@ -224,6 +224,7 @@ export const getShopSales: RequestHandler = async (req, res) => {
     const categorizeSales = async (sales: any[]) => {
       return {
         totalSales: sales,
+        totalSalesAmount: sales.reduce((total, {saleAmount}) => total + (saleAmount || 0), 0), 
         salesPaidInCash: sales.filter(
           (sale) => sale.paymentMethod === "CASH" && sale.balanceAmount <= 0
         ),
