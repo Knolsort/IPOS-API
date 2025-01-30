@@ -224,7 +224,6 @@ export const getShopSales: RequestHandler = async (req, res) => {
     const categorizeSales = async (sales: any[]) => {
       return {
         totalSales: sales,
-        totalSalesAmount: sales.reduce((total, {saleAmount}) => total + (saleAmount || 0), 0), 
         salesPaidInCash: sales.filter(
           (sale) => sale.paymentMethod === "CASH" && sale.balanceAmount <= 0
         ),
@@ -283,6 +282,112 @@ export const getShopSales: RequestHandler = async (req, res) => {
       },
       include: {
         customer: true,
+      },
+    });
+
+    res.status(200).json({
+      today: await categorizeSales(salesToday),
+      thisWeek: await categorizeSales(salesThisWeek),
+      thisMonth: await categorizeSales(salesThisMonth),
+      allTime: await categorizeSales(salesAllTime),
+      error: null,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Something went wrong",
+      data: null,
+    });
+  }
+};
+
+export const getShopSalesTotalAmounts: RequestHandler = async (req, res) => {
+  const { shopId } = req.params;
+
+  if (!shopId) {
+    res.status(400).json({
+      error: "Please provide a shop ID",
+      data: null,
+    });
+  }
+
+  const exitingShop = await db.shop.findUnique({
+    where: {
+      id: shopId,
+    },
+  });
+  if (!exitingShop) {
+    res.status(404).json({
+      error: `Shop with ID: ${shopId} not found`,
+      data: null,
+    });
+  }
+  // Define time periods
+  const todayStart = startOfDay(new Date());
+  const todayEnd = endOfDay(new Date());
+  const weekStart = startOfWeek(new Date());
+  const weekEnd = endOfWeek(new Date());
+  const monthStart = startOfMonth(new Date());
+  const monthEnd = endOfMonth(new Date());
+
+  try {
+    const categorizeSales = async (sales: any[]) => {
+      return {
+        totalSales: sales.length,
+        totalSalesAmount: sales.reduce(
+          (total, { saleAmount }) => total + (saleAmount || 0),
+          0
+        ),
+
+        totalSalesPaidInCredit: sales
+          .filter((sale) => sale.balanceAmount > 0)
+          .reduce((total, { saleAmount }) => total + (saleAmount || 0), 0),
+
+        totalSalesByMobileMoney: sales
+          .filter((sale) => sale.paymentMethod === "MOBILE_MONEY")
+          .reduce((total, { saleAmount }) => total + (saleAmount || 0), 0),
+
+        totalSalesByHandCash: sales
+          .filter(
+            (sale) => sale.paymentMethod === "CASH" && sale.balanceAmount <= 0
+          )
+          .reduce((total, { saleAmount }) => total + (saleAmount || 0), 0),
+      };
+    };
+
+    const salesToday = await db.sale.findMany({
+      where: {
+        shopId,
+        createdAt: {
+          gte: todayStart,
+          lte: todayEnd,
+        },
+      },
+    });
+
+    const salesThisWeek = await db.sale.findMany({
+      where: {
+        shopId,
+        createdAt: {
+          gte: weekStart,
+          lte: weekEnd,
+        },
+      },
+    });
+
+    const salesThisMonth = await db.sale.findMany({
+      where: {
+        shopId,
+        createdAt: {
+          gte: monthStart,
+          lte: monthEnd,
+        },
+      },
+    });
+
+    const salesAllTime = await db.sale.findMany({
+      where: {
+        shopId,
       },
     });
 

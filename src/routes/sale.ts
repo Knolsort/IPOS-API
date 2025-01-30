@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createSale, createSaleItem, getSales, getShopSales, getShopsSales } from '../controllers/sales';
+import { createSale, createSaleItem, getSales, getShopSales, getShopSalesTotalAmounts, getShopsSales } from '../controllers/sales';
 
 const saleRouter = express.Router();
 
@@ -96,6 +96,7 @@ saleRouter.get('/sales', getSales);
  *         description: Shop not found
  */
 saleRouter.get('/sales/shop/:shopId', getShopSales);
+saleRouter.get('/sales/total/:shopId', getShopSalesTotalAmounts);
 
 /**
  * @swagger
