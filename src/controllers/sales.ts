@@ -341,17 +341,17 @@ export const getShopSalesTotalAmounts: RequestHandler = async (req, res) => {
 
         totalSalesPaidInCredit: sales
           .filter((sale) => sale.balanceAmount > 0)
-          .reduce((total, { saleAmount }) => total + (saleAmount || 0), 0),
+          .reduce((total, { balanceAmount }) => total + (balanceAmount || 0), 0),
 
         totalSalesByMobileMoney: sales
-          .filter((sale) => sale.paymentMethod === "MOBILE_MONEY")
-          .reduce((total, { saleAmount }) => total + (saleAmount || 0), 0),
+          .filter((sale) => sale.paymentMethod === "UPI")
+          .reduce((total, { paidAmount }) => total + (paidAmount || 0), 0),
 
         totalSalesByHandCash: sales
           .filter(
             (sale) => sale.paymentMethod === "CASH" && sale.balanceAmount <= 0
           )
-          .reduce((total, { saleAmount }) => total + (saleAmount || 0), 0),
+          .reduce((total, { paidAmount }) => total + (paidAmount || 0), 0),
       };
     };
 
