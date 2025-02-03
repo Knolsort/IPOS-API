@@ -71,7 +71,7 @@ export const getCredits: RequestHandler = async (req, res) => {
 };
 
 export const getCreditsByShop: RequestHandler = async (req, res) => {
-  const { shopId } = req.body;
+  const { shopId } = req.params;
   try {
     const credit = await db.credit.findMany({
       where: {
