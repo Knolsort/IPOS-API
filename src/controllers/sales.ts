@@ -16,7 +16,8 @@ export const createSale: RequestHandler = async (req, res) => {
     customerId,
     saleAmount,
     balanceAmount,
-    paidAmount,
+    cashPaidAmount,
+    upiPaidAmount,
     saleType,
     paymentMethod,
     shopId,
@@ -48,7 +49,7 @@ export const createSale: RequestHandler = async (req, res) => {
             data: null,
           });
         }
-        // Update the customer unpaidAmount
+        // Update the customer uncashPaidAmount
         // Update the customer  MaxCreditAmount
         const updatedCustomer = await transaction.credit.update({
           where: {
@@ -75,7 +76,8 @@ export const createSale: RequestHandler = async (req, res) => {
           saleAmount,
           saleType,
           balanceAmount,
-          paidAmount,
+          cashPaidAmount,
+          upiPaidAmount,
           transactionCode,
         },
       });
@@ -225,14 +227,15 @@ export const getShopSales: RequestHandler = async (req, res) => {
       return {
         totalSales: sales,
         salesPaidInCash: sales.filter(
-          (sale) => sale.paymentMethod === "CASH" && sale.balanceAmount <= 0
+          (sale) =>
+            sale.paymentMethod === "CASH" ||
+            (sale.paymentMethod === "SPLIT" && sale.balanceAmount <= 0)
         ),
         salesPaidInCredit: sales.filter((sale) => sale.balanceAmount > 0),
         salesByMobileMoney: sales.filter(
-          (sale) => sale.paymentMethod === "MOBILE_MONEY"
-        ),
-        salesByHandCash: sales.filter(
-          (sale) => sale.paymentMethod === "CASH" && sale.balanceAmount <= 0
+          (sale) =>
+            (sale.paymentMethod === "UPI" || sale.paymentMethod === "SPLIT") &&
+            sale.upiPaidAmount > 0
         ),
       };
     };
@@ -341,17 +344,30 @@ export const getShopSalesTotalAmounts: RequestHandler = async (req, res) => {
 
         totalSalesPaidInCredit: sales
           .filter((sale) => sale.balanceAmount > 0)
-          .reduce((total, { balanceAmount }) => total + (balanceAmount || 0), 0),
+          .reduce(
+            (total, { balanceAmount }) => total + (balanceAmount || 0),
+            0
+          ),
 
         totalSalesByMobileMoney: sales
-          .filter((sale) => sale.paymentMethod === "UPI")
-          .reduce((total, { paidAmount }) => total + (paidAmount || 0), 0),
+          .filter(
+            (sale) =>
+              sale.paymentMethod === "UPI" || sale.paymentMethod === "SPLIT"
+          )
+          .reduce(
+            (total, { upiPaidAmount }) => total + (upiPaidAmount || 0),
+            0
+          ),
 
         totalSalesByHandCash: sales
           .filter(
-            (sale) => sale.paymentMethod === "CASH"
+            (sale) =>
+              sale.paymentMethod === "CASH" || sale.paymentMethod === "SPLIT"
           )
-          .reduce((total, { paidAmount }) => total + (paidAmount || 0), 0),
+          .reduce(
+            (total, { cashPaidAmount }) => total + (cashPaidAmount || 0),
+            0
+          ),
       };
     };
 
@@ -439,14 +455,11 @@ export const getShopsSales: RequestHandler = async (req, res) => {
       return {
         totalSales: sales,
         salesPaidInCash: sales.filter(
-          (sale) => sale.paymentMethod === "CASH" && sale.balanceAmount <= 0
+          (sale) => sale.paymentMethod === "CASH"|| sale.paymentMethod === "SPLIT" && sale.balanceAmount <= 0
         ),
         salesPaidInCredit: sales.filter((sale) => sale.balanceAmount > 0),
         salesByMobileMoney: sales.filter(
-          (sale) => sale.paymentMethod === "MOBILE_MONEY"
-        ),
-        salesByHandCash: sales.filter(
-          (sale) => sale.paymentMethod === "CASH" && sale.balanceAmount <= 0
+          (sale) => sale.paymentMethod === "UPI"|| sale.paymentMethod === "SPLIT" && sale.upiPaidAmount > 0
         ),
       };
     };

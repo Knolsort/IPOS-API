@@ -509,11 +509,19 @@
           ],
           "default": 0
         },
-        "paidAmount": {
+        "cashPaidAmount": {
           "type": [
             "integer",
             "null"
-          ]
+          ],
+          "default": 0
+        },
+        "upiPaidAmount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": 0
         },
         "saleType": {
           "type": "string",
@@ -528,7 +536,8 @@
           "default": "CASH",
           "enum": [
             "CASH",
-            "UPI"
+            "UPI",
+            "SPLIT"
           ]
         },
         "transactionCode": {

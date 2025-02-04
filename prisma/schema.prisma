@@ -166,25 +166,25 @@ enum SaleType {
 enum paymentMethod {
   CASH
   UPI
+  SPLIT
 }
 
 model Sale {
-  id              String        @id @default(auto()) @map("_id") @db.ObjectId
-  customerId      String?       @db.ObjectId
-  saleNumber      String        @unique
-  saleAmount      Int
-  balanceAmount   Int?          @default(0)
-  paidAmount      Int?
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  customerId     String? @db.ObjectId
+  saleNumber     String  @unique
+  saleAmount     Int
+  balanceAmount  Int?    @default(0)
+  cashPaidAmount Int?    @default(0)
+  upiPaidAmount  Int?    @default(0)
   saleType        SaleType      @default(PAID)
   paymentMethod   paymentMethod @default(CASH)
   transactionCode String?
-
   // Relationships
   shopId    String     @db.ObjectId
   shop      Shop       @relation(fields: [shopId], references: [id])
   saleItems SaleItem[]
   customer  Customer?  @relation(fields: [customerId], references: [id])
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
