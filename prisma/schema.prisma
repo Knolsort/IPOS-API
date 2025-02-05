@@ -54,24 +54,25 @@ model User {
 }
 
 model Shop {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
   name           String
-  phone          String?   @unique
-  slug           String    @unique
-  logo           String    @default("https://cdn-icons-png.flaticon.com/128/10446/10446694.png")
+  phone          String?      @unique
+  slug           String       @unique
+  logo           String       @default("https://cdn-icons-png.flaticon.com/128/10446/10446694.png")
   location       String
   latitude       Float?
   longitude      Float?
-  gst            Boolean?  @default(false)
+  gst            Boolean?     @default(false)
   attendantEmail String[]
-  adminId        String    @db.ObjectId
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  adminId        String       @db.ObjectId
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
   products       Product[]
   sales          Sale[]
   expenses       Expense[]
   credit         Credit[]
-  admin          User      @relation(fields: [adminId], references: [id])
+  shopCredits    ShopCredit[]
+  admin          User         @relation(fields: [adminId], references: [id])
 }
 
 model Supplier {
@@ -81,6 +82,7 @@ model Supplier {
   contactPerson  String?
   product        Product[]
   purchaseOrders PurchaseOrder[]
+  shopCredits    ShopCredit[]
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
 }
@@ -144,7 +146,7 @@ model Product {
   stockQty           Int
   price              Float
   offerPrice         Float?
-  sku                String              @unique
+  sku                String?             @unique
   supplierId         String?             @db.ObjectId
   shopSlug           String
   expiryDate         String[]
@@ -170,23 +172,23 @@ enum paymentMethod {
 }
 
 model Sale {
-  id             String  @id @default(auto()) @map("_id") @db.ObjectId
-  customerId     String? @db.ObjectId
-  saleNumber     String  @unique
-  saleAmount     Int
-  balanceAmount  Int?    @default(0)
-  cashPaidAmount Int?    @default(0)
-  upiPaidAmount  Int?    @default(0)
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  customerId      String?       @db.ObjectId
+  saleNumber      String        @unique
+  saleAmount      Int
+  balanceAmount   Int?          @default(0)
+  cashPaidAmount  Int?          @default(0)
+  upiPaidAmount   Int?          @default(0)
   saleType        SaleType      @default(PAID)
   paymentMethod   paymentMethod @default(CASH)
   transactionCode String?
   // Relationships
-  shopId    String     @db.ObjectId
-  shop      Shop       @relation(fields: [shopId], references: [id])
-  saleItems SaleItem[]
-  customer  Customer?  @relation(fields: [customerId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  shopId          String        @db.ObjectId
+  shop            Shop          @relation(fields: [shopId], references: [id])
+  saleItems       SaleItem[]
+  customer        Customer?     @relation(fields: [customerId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 }
 
 model SaleItem {
@@ -230,10 +232,10 @@ model Expense {
   amount      Int
   description String?
   attachments String[]
-  payeeId     String          @db.ObjectId
+  payeeId     String?         @db.ObjectId
   categoryId  String          @db.ObjectId
   shopId      String          @db.ObjectId
-  payee       Payee           @relation(fields: [payeeId], references: [id])
+  payee       Payee?          @relation(fields: [payeeId], references: [id])
   category    ExpenseCategory @relation(fields: [categoryId], references: [id])
   shop        Shop            @relation(fields: [shopId], references: [id])
   createdAt   DateTime        @default(now())
@@ -316,4 +318,16 @@ model PurchaseOrderItem {
   currentStock    Int
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
+}
+
+model ShopCredit {
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  maxCreditDays      Int?
+  unpaidCreditAmount Int       @default(0)
+  supplierId         String?   @db.ObjectId
+  shopId             String    @db.ObjectId
+  shop               Shop      @relation(fields: [shopId], references: [id])
+  supplier           Supplier? @relation(fields: [supplierId], references: [id])
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 }

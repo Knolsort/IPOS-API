@@ -187,6 +187,12 @@
             "$ref": "#/definitions/Credit"
           }
         },
+        "shopCredits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ShopCredit"
+          }
+        },
         "admin": {
           "$ref": "#/definitions/User"
         }
@@ -220,6 +226,12 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/PurchaseOrder"
+          }
+        },
+        "shopCredits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ShopCredit"
           }
         },
         "createdAt": {
@@ -438,7 +450,10 @@
           ]
         },
         "sku": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "expiryDate": {
           "type": "array",
@@ -690,7 +705,14 @@
           }
         },
         "payee": {
-          "$ref": "#/definitions/Payee"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Payee"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "category": {
           "$ref": "#/definitions/ExpenseCategory"
@@ -909,6 +931,45 @@
           "format": "date-time"
         }
       }
+    },
+    "ShopCredit": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "maxCreditDays": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "unpaidCreditAmount": {
+          "type": "integer",
+          "default": 0
+        },
+        "shop": {
+          "$ref": "#/definitions/Shop"
+        },
+        "supplier": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Supplier"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
     }
   },
   "type": "object",
@@ -972,6 +1033,9 @@
     },
     "purchaseOrderItem": {
       "$ref": "#/definitions/PurchaseOrderItem"
+    },
+    "shopCredit": {
+      "$ref": "#/definitions/ShopCredit"
     }
   }
 }

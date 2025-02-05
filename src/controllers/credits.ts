@@ -111,7 +111,6 @@ export const getSingleCredit: RequestHandler = async (req, res) => {
         data: null,
         error: "Customer not found",
       });
-      return;
     }
 
     res.status(200).json({
@@ -203,3 +202,4 @@ export const deleteCreditById: RequestHandler = async (req, res) => {
     });
   }
 };
+
