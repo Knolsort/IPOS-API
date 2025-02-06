@@ -83,6 +83,33 @@ export const getSingleExpense: RequestHandler = async (req, res) => {
     });
   }
 };
+export const getSingleExpenseByShop: RequestHandler = async (req, res) => {
+  try {
+    const { shopId } = req.params;
+    const existingExpenseByShop = await db.expense.findMany({
+      where: { shopId },
+    });
+
+    if (!existingExpenseByShop) {
+      res.status(404).json({
+        data: null,
+        error: "No expense created yet",
+      });
+    }
+
+    res.status(200).json({
+      data: existingExpenseByShop,
+      error: null,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: null,
+      error: "Something went wrong",
+    });
+  }
+};
+
 
 export const updateExpenseById: RequestHandler = async (req, res) => {
   try {

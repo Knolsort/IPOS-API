@@ -322,6 +322,7 @@ model PurchaseOrderItem {
 
 model ShopCredit {
   id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  title              String
   maxCreditDays      Int?
   unpaidCreditAmount Int       @default(0)
   supplierId         String?   @db.ObjectId

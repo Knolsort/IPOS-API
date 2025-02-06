@@ -938,6 +938,9 @@
         "id": {
           "type": "string"
         },
+        "title": {
+          "type": "string"
+        },
         "maxCreditDays": {
           "type": [
             "integer",

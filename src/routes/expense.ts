@@ -3,6 +3,7 @@ import {
   deleteExpenseById,
   getExpenses,
   getSingleExpense,
+  getSingleExpenseByShop,
   updateExpenseById,
 } from "../controllers/expenses";
 import express from "express";
@@ -76,6 +77,7 @@ expenseRouter.get("/expenses", getExpenses);
  *         description: Expense not found
  */
 expenseRouter.get("/expenses/:id", getSingleExpense);
+expenseRouter.get("/expenses/shop/:shopId", getSingleExpenseByShop);
 
 /**
  * @swagger
