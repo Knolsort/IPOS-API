@@ -1,4 +1,4 @@
-import { createSupplier, getSingleSupplier, getSuppliers } from "../controllers/suppliers";
+import { createSupplier, getSingleSupplier, getSupplierByPhone, getSuppliers } from "../controllers/suppliers";
 import express from "express";
 const supplierRouter = express.Router();
 
@@ -69,5 +69,6 @@ supplierRouter.get("/suppliers", getSuppliers);
  *         description: Supplier not found
  */
 supplierRouter.get("/suppliers/:id", getSingleSupplier);
+supplierRouter.get("/suppliers/phone/:phone", getSupplierByPhone);
 
 export default supplierRouter;

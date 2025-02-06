@@ -66,3 +66,36 @@ export const getSingleSupplier: RequestHandler = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch supplier" });
   }
 };
+
+export const getSupplierByPhone: RequestHandler = async (req, res) => {
+  const { phone } = req.params;
+
+  if (!phone || phone.length < 3) {
+    res.status(400).json({
+      data: null,
+      error: "Please provide at least 3 characters of the phone number",
+    });
+  }
+
+  try {
+    const customers = await db.supplier.findMany({
+      where: {
+        phone: {
+          startsWith: phone,
+        },
+      },
+      take: 10,
+    });
+
+    res.status(200).json({
+      data: customers,
+      error: null,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      data: null,
+      error: "Something went wrong",
+    });
+  }
+};
