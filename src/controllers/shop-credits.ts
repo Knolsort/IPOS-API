@@ -119,14 +119,15 @@ export const updateShopCredit: RequestHandler = async (req, res) => {
 
 export const getShopCreditById: RequestHandler = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { shopId } = req.params;
 
-    const shopCredit = await db.shopCredit.findUnique({
-      where: { id },
+    const shopCredit = await db.shopCredit.findMany({
+      where: { shopId },
       include: {
         shop: true,
         supplier: true,
       },
+      orderBy: { createdAt: "desc" },
     });
 
     if (!shopCredit) {

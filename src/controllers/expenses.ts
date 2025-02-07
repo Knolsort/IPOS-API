@@ -88,6 +88,10 @@ export const getSingleExpenseByShop: RequestHandler = async (req, res) => {
     const { shopId } = req.params;
     const existingExpenseByShop = await db.expense.findMany({
       where: { shopId },
+      include: {
+        category: true
+      },
+      orderBy: {createdAt: "desc"}
     });
 
     if (!existingExpenseByShop) {
