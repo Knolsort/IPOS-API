@@ -1,31 +1,27 @@
 import { RequestHandler } from "express";
 import { db } from "../db/db";
-import { clerkClient } from "@clerk/express";
 
 export const createUser: RequestHandler = async (req, res) => {
   try {
-    const { userId } = req.body;
-    if (!userId) {
-      res.status(401).json({
-        error: "Unauthorized",
+    const { firstName, lastName, email, shopType } = req.body;
+    if (!firstName || !lastName || !email) {
+      res.status(400).json({
+        error: "Missing required fields",
         data: null,
       });
     }
+    
 
-    // Check if user already exist
+    // Check if user already exists
     const existingUser = await db.user.findUnique({
       where: {
-        userId,
+        email,
       },
       include: {
         shops: true,
-      }
+      },
     });
-    // Get user data from Clerk
-    const clerkUser = await clerkClient.users.getUser(userId);
-    const email = clerkUser.emailAddresses[0]?.emailAddress;
-    const firstName = clerkUser.firstName || "";
-    const lastName = clerkUser.lastName || "";
+    
 
     if (!existingUser) {
       const newUser = await db.user.create({
@@ -33,7 +29,7 @@ export const createUser: RequestHandler = async (req, res) => {
           firstName,
           lastName,
           email,
-          userId,
+          shopType,
         },
       });
 
@@ -88,7 +84,6 @@ export const getUserById: RequestHandler = async (req, res) => {
       include: {
         shops: true,
       },
-      
     });
 
     if (!user) {
@@ -114,7 +109,7 @@ export const getUserById: RequestHandler = async (req, res) => {
 export const updateUserById: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, userId } = req.body;
+    const { firstName, lastName, email, shopType } = req.body;
 
     // Check if user exists
     const existingUser = await db.user.findUnique({
@@ -130,14 +125,6 @@ export const updateUserById: RequestHandler = async (req, res) => {
       });
     }
 
-    // Verify user is updating their own profile
-    if (existingUser?.userId !== userId) {
-      res.status(403).json({
-        error: "Not authorized to update this user",
-        data: null,
-      });
-    }
-
     const updatedUser = await db.user.update({
       where: {
         id,
@@ -145,6 +132,8 @@ export const updateUserById: RequestHandler = async (req, res) => {
       data: {
         firstName,
         lastName,
+        email,
+        shopType,
       },
     });
 
@@ -164,7 +153,6 @@ export const updateUserById: RequestHandler = async (req, res) => {
 export const deleteUserById: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    const { userId } = req.body;
 
     const user = await db.user.findUnique({
       where: {
@@ -175,14 +163,6 @@ export const deleteUserById: RequestHandler = async (req, res) => {
     if (!user) {
       res.status(404).json({
         error: "User not found",
-        data: null,
-      });
-    }
-
-    // Verify user is deleting their own profile
-    if (user?.userId !== userId) {
-      res.status(403).json({
-        error: "Not authorized to delete this user",
         data: null,
       });
     }

@@ -86,8 +86,13 @@
         "email": {
           "type": "string"
         },
-        "userId": {
-          "type": "string"
+        "shopType": {
+          "type": "string",
+          "enum": [
+            "BAKERY",
+            "SUPERMARKET",
+            "MINISUPERMARKET"
+          ]
         },
         "createdAt": {
           "type": "string",
