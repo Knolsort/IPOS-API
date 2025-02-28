@@ -3,8 +3,8 @@ import { db } from "../db/db";
 
 export const createUser: RequestHandler = async (req, res) => {
   try {
-    const { firstName, lastName, email, shopType } = req.body;
-    if (!firstName || !lastName || !email) {
+    const { firstName, lastName, email, password } = req.body;
+    if (!firstName || !lastName || !email || !password) {
       res.status(400).json({
         error: "Missing required fields",
         data: null,
@@ -29,7 +29,7 @@ export const createUser: RequestHandler = async (req, res) => {
           firstName,
           lastName,
           email,
-          shopType,
+          password
         },
       });
 
@@ -109,7 +109,7 @@ export const getUserById: RequestHandler = async (req, res) => {
 export const updateUserById: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, email, shopType } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
     // Check if user exists
     const existingUser = await db.user.findUnique({
@@ -133,7 +133,7 @@ export const updateUserById: RequestHandler = async (req, res) => {
         firstName,
         lastName,
         email,
-        shopType,
+        password,
       },
     });
 

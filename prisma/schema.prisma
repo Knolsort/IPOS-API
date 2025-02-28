@@ -53,7 +53,7 @@ model User {
   firstName String
   lastName  String
   email     String   @unique
-  shopType  ShopType
+  password  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   shops     Shop[]
@@ -71,6 +71,7 @@ model Shop {
   gst            Boolean?     @default(false)
   attendantEmail String[]
   adminId        String       @db.ObjectId
+  shopType       String?
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   products       Product[]

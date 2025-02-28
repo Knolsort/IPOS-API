@@ -86,12 +86,10 @@
         "email": {
           "type": "string"
         },
-        "shopType": {
-          "type": "string",
-          "enum": [
-            "BAKERY",
-            "SUPERMARKET",
-            "MINISUPERMARKET"
+        "password": {
+          "type": [
+            "string",
+            "null"
           ]
         },
         "createdAt": {
@@ -159,6 +157,12 @@
           "items": {
             "type": "string"
           }
+        },
+        "shopType": {
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "createdAt": {
           "type": "string",

@@ -32,6 +32,7 @@ export const createShop: RequestHandler = async (req, res) => {
       longitude,
       gst,
       logo,
+      shopType,
       adminId,
       attendantEmail,
     } = req.body;
@@ -83,6 +84,7 @@ export const createShop: RequestHandler = async (req, res) => {
         longitude,
         gst,
         logo,
+        shopType,
         adminId,
         attendantEmail,
       },
