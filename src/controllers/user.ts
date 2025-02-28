@@ -189,7 +189,7 @@ export const otpSend: RequestHandler = async (req, res) => {
   try {
     const { email } = req.body;
     const otp = Math.floor(1000 + Math.random() * 9000);
-    console.log("OTP : ",otp)
+    console.log("OTP : ", otp)
 
     const user = await db.user.findUnique({
       where: {
@@ -239,6 +239,9 @@ export const otpVerify: RequestHandler = async (req, res) => {
       where: {
         email,
       },
+      include: {
+        shops: true,
+      },
     });
 
     if (!user) {
@@ -250,7 +253,7 @@ export const otpVerify: RequestHandler = async (req, res) => {
 
     if (user?.password === otp) {
       res.status(200).json({
-        data: "OTP verified successfully",
+        data: user,
         error: null,
       });
     } else {
