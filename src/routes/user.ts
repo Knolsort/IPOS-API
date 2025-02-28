@@ -4,6 +4,8 @@ import {
   getUsers,
   getUserById,
   updateUserById,
+  otpSend,
+  otpVerify,
 } from "../controllers/user";
 import express, { RequestHandler } from "express";
 
@@ -31,7 +33,7 @@ const userRouter = express.Router();
  *               $ref: '#/components/schemas/User'
  */
 
-userRouter.post("/users", createUser);;
+userRouter.post("/users", createUser);
 
 /**
  * @swagger
@@ -49,7 +51,7 @@ userRouter.post("/users", createUser);;
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/User'
- */
+*/
 userRouter.get("/users", getUsers);
 
 /**
@@ -74,7 +76,7 @@ userRouter.get("/users", getUsers);
  *              $ref: '#/components/schemas/User'
  *       404:
  *         description: User not found.
- */
+*/
 userRouter.get("/users/:id", getUserById);
 
 /**
@@ -103,7 +105,7 @@ userRouter.get("/users/:id", getUserById);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
- */
+*/
 userRouter.put("/users/:id", updateUserById);
 
 /**
@@ -124,7 +126,9 @@ userRouter.put("/users/:id", updateUserById);
  *         description: User deleted successfully.
  *       404:
  *         description: User not found.
- */
+*/
 userRouter.delete("/users/:id", deleteUserById);
 
+userRouter.post("/users/otp", otpSend);
+userRouter.post("/users/otp/verify", otpVerify);
 export default userRouter;
