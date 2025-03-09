@@ -6,7 +6,7 @@ const shopCreditRouter = express.Router();
 
 shopCreditRouter.post("/shopCredits", createShopCredit);
 shopCreditRouter.get("/shopCredits", getShopCredits);
-shopCreditRouter.get("/shopCredits/:id", getShopCreditById);
+shopCreditRouter.get("/shopCredits/:shopId", getShopCreditById);
 shopCreditRouter.put("/shopCredits/:id", updateShopCredit);
 shopCreditRouter.delete("/shopCredits/:id", deleteShopCredit);
 
