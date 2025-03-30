@@ -352,6 +352,10 @@
         "name": {
           "type": "string"
         },
+        "language": {
+          "type": "string",
+          "default": "en"
+        },
         "otherNames": {
           "type": "array",
           "items": {

@@ -143,6 +143,7 @@ model GProduct {
   products    Product[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  language    String?   @default("en")
 }
 
 model Product {

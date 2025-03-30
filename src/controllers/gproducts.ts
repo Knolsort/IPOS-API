@@ -6,6 +6,7 @@ export const createGProduct: RequestHandler = async (req, res) => {
     const {
       name,
       otherNames,
+      language,
       description,
       barcode,
       image,
@@ -67,6 +68,7 @@ export const createGProduct: RequestHandler = async (req, res) => {
         brandId,
         unitTypes,
         categoryId,
+        language,
       },
     });
 
